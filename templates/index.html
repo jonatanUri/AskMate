@@ -7,8 +7,8 @@
 <body>
     <h1>WELKOM!</h1>
     {% for i in questions_dict %}
-        <h2>{{i['title']}}</h2>
-        <h4>{{i['message']}}</h4>
+    <p><a href="question/{{ i['id'] }}"><h3>{{ i['title'] }}</h3></a></p>
+    <h4>{{i['message']}}</h4>
     {% endfor %}
 </body>
 </html>

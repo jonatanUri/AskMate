@@ -13,9 +13,9 @@
     <h6>
         <p>Viewed: {{i['view_number']}}</p>
         <p>Votes: {{i['vote_number']}}</p>
-        <!-- TODO: NEED DATE TIME TRANSLATION HERE -->
-    {% endif %}
-    {% endfor %}
+        <p>Posted: {{i['submission_time']}} </p>
+        {% endif %}
+        {% endfor %}
     </h6>
     <p></p>
     <h4><a href="/"><- back</a></h4>

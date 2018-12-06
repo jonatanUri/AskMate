@@ -19,16 +19,5 @@
     </h6>
     <p></p>
     <h4><a href="/"><- back</a></h4>
-    <p></p>
-    <h4>Answers:</h4>
-    {% for i in answers_dict: %}
-    {% if int(i['question_id']) == num: %}
-    <p>
-    <h3>{{i['message']}}</h3>
-    </p>
-    <p>Votes: {{i['vote_number']}}    Posted: {{i['submission_time']}}</p>
-    {%endif%}
-    <p></p>
-    {%endfor%}
 </body>
 </html>

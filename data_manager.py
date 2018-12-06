@@ -9,6 +9,7 @@ def read_question():
     global question_path
     return read_csv(question_path)
 
+
 def read_answer():
     global answer_path
     return  read_csv(answer_path)
@@ -52,8 +53,22 @@ def delete_question(id_):
 
 
 def rewrite_csv(data, path):
-    with open(path, "w") as csvfile:
+    with open(path, 'w') as csvfile:
         writer = csv.DictWriter(csvfile)
         writer.writeheader()
         for i in data:
             writer.writerow(i)
+
+
+def add_question():
+    questions=read_question()
+    with open(question_path, 'a') as csvfile:
+        writer = csv.DictWriter(csvfile)
+        writer.writerow()
+
+
+def add_answer():
+    answers=read_answer()
+    with open(answer_path, 'a') as csvfile:
+        writer = csv.DictWriter(csvfile)
+        writer.writerow()

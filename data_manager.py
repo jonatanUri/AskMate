@@ -1,8 +1,9 @@
 import csv
 import time
+import data_paths
 
-question_path="/home/jonatan/codecool/WEB/SI1/ksfhdjgfh/sample_data/question.csv"
-answer_path="/home/jonatan/codecool/WEB/SI1/ksfhdjgfh/sample_data/answer.csv"
+question_path = data_paths.question_path
+answer_path = data_paths.answer_path
 
 
 def read_question():

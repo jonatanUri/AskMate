@@ -1,7 +1,74 @@
-title {
-    color: darkorchid;
+@keyframes flash {
+	0% {
+        color: lightsalmon;
+        opacity: 1;
+    }
+
+    90% {
+        color: aqua;
+        opacity: .3;
+    }
+
+    100% {
+        color: lightsalmon;
+        opacity: 1;
+    }
+}
+
+body {
+    background-color: #444444;
+    text-align: center;
 }
 
 h1 {
-    color: darkorchid;
+	animation: flash linear 3s infinite;
+    font-size: 50px;
+    color: lightsalmon;
+    font-family: 'Staatliches', cursive;
+}
+
+a {
+
+    text-decoration: none;
+    color: aliceblue;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+a:visited {
+    color: #f0f8fc
+}
+
+
+.btn {
+  display: inline-block;
+  margin: 0.8em;
+  text-transform: uppercase;
+  padding: 0.8em 1.2em;
+  background: none;
+  color:white;
+  font-weight: bold;
+  position: relative;
+  transition:color 0.25s ease;
+  border:3px solid white;
+}
+
+.btn:hover {
+  color:salmon;
+}
+
+.btn::after {
+  position: absolute;
+  content: '';
+  top:0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background-color: white;
+  transform-origin:left;
+  transition:width 0.25s ease;
+  z-index:-1;
+}
+
+.btn:hover::after {
+  width: 100%;
 }

@@ -2,32 +2,31 @@
 <html>
 <head>
     <meta charset="utf-8">
-    {% for i in questions_dict: %}
-    {% if i['id'] == num: %}
-
-    <title>{{i['title']}} </title>
+    <title>{{this_question['title']}} </title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>{{i['title']}}!</h1>
-    <h3>{{i['message']}}!</h3>
+    <h1>{{this_question['title']}}</h1>
+    <h3>{{this_question['message']}}</h3>
     <h6>
-        <p>Viewed: {{i['view_number']}}</p>
-        <p>Votes: {{i['vote_number']}}</p>
-        <p>Posted: {{i['submission_time']}} </p>
-        {% endif %}
-        {% endfor %}
+        <p>Viewed: {{this_question['view_number']}}</p>
+        <p>Votes: {{this_question['vote_number']}}</p>
+        <p>Posted: {{this_question['submission_time']}} </p>
     </h6>
     <p></p>
-    <h4><a href="/"><- back</a></h4>
+    <h4><a href="/"><- back</a> ------- ><a href="/question/{{ this_question['id'] }}/new-answer">Answer!</a> ------ <a href="/delete-question/{{ this_question['id'] }}", >Delete this question</a></h4>
     <p></p>
     <h4>Answers:</h4>
-    {% for i in answers_dict: %}
-    {% if int(i['question_id']) == num: %}
+    {% for i in answers_list: %}
     <p>
     <h3>{{i['message']}}</h3>
     </p>
-    <p>Votes: {{i['vote_number']}}    Posted: {{i['submission_time']}}</p>
-    {%endif%}
+    <p>Votes: {{i['vote_number']}} <a href="">▲</a> <a href="">▼</a>  Posted: {{i['submission_time']}}
+        <form method="POST" action="/answer/{{ this_question['id'] }}/delete">
+        <input type="hidden" value="{{i['id']}}" name="answer_id" id="answer_id">
+        <input type="submit" value="Delete">
+        </form>
+    </p>
     <p></p>
     {%endfor%}
 </body>

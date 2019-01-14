@@ -16,25 +16,15 @@ def home_redirect():
 
 @app.route('/list')
 def mainpage():
-    questions_dict = data_manager.read_question()
+    questions_dict = data_manager.read_all_questions()
     questions_dict = data_manager.sorted_by_submission_time(questions_dict)
     return render_template("index.html", questions_dict=questions_dict)
 
 
 @app.route('/question/<num>')
 def question(num):
-    questions_dict = data_manager.read_question()
-    questions_dict = data_manager.convert_csv_to_human_readable(questions_dict)
-    answers_dict = data_manager.read_answer()
-    answers_dict = data_manager.convert_csv_to_human_readable(answers_dict)
-    for i in questions_dict:
-        if i['id'] == num:
-            this_question = i
-            break
-    answers_list = []
-    for answer in answers_dict:
-        if num == answer["question_id"]:
-            answers_list.append(answer)
+    this_question=data_manager.read_a_question(num)
+    answers_list=data_manager.answer_by_question_id(num)
     return render_template("question.html", num=num, this_question=this_question, answers_list=answers_list)
 
 
@@ -52,7 +42,7 @@ def new_question():
 def submit_question():
     if request.method == 'POST':
         id_ = data_manager.get_new_question_id()
-        submission_time = data_manager.get_current_unix_timestamp()
+        submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
         title = request.form['title']
         message = request.form['message']
         views = 0
@@ -63,7 +53,8 @@ def submit_question():
             'view_number': views,
             'vote_number': votes,
             'title': title,
-            'message': message
+            'message': message,
+            'image': None
         }
         data_manager.add_question(question_dict)
     return redirect('/question/'+id_)
@@ -82,7 +73,8 @@ def submit_answer():
             'submission_time': submission_time,
             'vote_number': votes,
             'question_id': question_id,
-            'message': message
+            'message': message,
+            'image': None
         }
         data_manager.add_answer(answer_dict)
     return redirect('/question/'+question_id)

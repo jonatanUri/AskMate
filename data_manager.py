@@ -1,6 +1,8 @@
 import csv
 import time
 import data_paths
+import os
+import database_common
 
 question_path = data_paths.question_path
 answer_path = data_paths.answer_path
@@ -8,26 +10,62 @@ question_header = ['id', 'submission_time', 'view_number', 'vote_number', 'title
 answer_header = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
-def read_question():
+'''def read_all_questions():
     global question_path
     return read_csv(question_path)
 
 
 def read_answer():
     global answer_path
-    return read_csv(answer_path)
+    return read_csv(answer_path)'''
 
 
-def read_csv(path):
+@database_common.connection_handler
+def read_all_questions(cursor):
+    cursor.execute("""
+                    SELECT * FROM question;
+                    """)
+    questions = cursor.fetchall()
+    return questions
+
+
+@database_common.connection_handler
+def answer_by_question_id(cursor, id_):
+    cursor.execute("""
+                    SELECT * FROM answer  where question_id=%(id_)s;
+                    """, {'id_': id_})
+    answers = cursor.fetchall()
+    return answers
+
+
+@database_common.connection_handler
+def read_a_question(cursor, id_):
+    cursor.execute("""
+                    SELECT * FROM question where id=%(id_)s;
+                    """, {'id_': id_})
+    questions = cursor.fetchall()
+    return questions
+
+
+@database_common.connection_handler
+def read_answer(cursor):
+    cursor.execute("""
+                    SELECT * FROM answer;
+                    """)
+    answers = cursor.fetchall()
+    return answers
+
+
+'''def read_csv(path):
     with open(path, "r") as questions:
         reader = csv.DictReader(questions)
         myList = []
         for row in reader:
             myList.append(row)
-    return myList
+    return myList'''
 
 
-def convert_csv_to_human_readable(list_of_dicts):
+def convert_dict_to_human_readable(list_of_dicts):
     new_csv = []
     for row in list_of_dicts:
         if 'submission_time' in row:
@@ -41,46 +79,62 @@ def convert_time(unix_timestamp):
     return readable_time
 
 
-def delete_answer(id_):
+'''def delete_answer(id_):
     answers = read_answer()
     for answer in answers:
         if id_ == answer['id']:
             answers.remove(answer)
-    rewrite_csv(answers, answer_path, answer_header)
+    rewrite_csv(answers, answer_path, answer_header)'''
 
 
-def delete_question(id_):
-    questions = read_question()
-    answers = read_answer()
-    for question in questions:
-        if id_ == question['id']:
-            questions.remove(question)
-            break
-    rewrite_csv(questions, question_path, question_header)
-    for answer in answers:
-        if id_ == answer['question_id']:
-            answers.remove(answer)
-    rewrite_csv(answers, answer_path, answer_header)
+@database_common.connection_handler
+def delete_answer(cursor, id_):
+    cursor.execute("""
+                    DELETE FROM answer WHERE id= %(id_)s 
+                    """,
+                   {'id_': id_})
 
 
-def rewrite_csv(data, path, header):
+@database_common.connection_handler
+def delete_question(cursor, id_):
+    cursor.execute("""
+                        DELETE FROM question WHERE id= %(id_)s;
+                        DELETE FROM answer WHERE question_id= %(id_)s
+                        """,
+                   {'id_': id_})
+
+
+
+'''def rewrite_csv(data, path, header):
     with open(path, 'w') as csvfile:
         writer = csv.DictWriter(csvfile, header)
         writer.writeheader()
         for i in data:
-            writer.writerow(i)
+            writer.writerow(i)'''
 
 
-def add_question(new_question):
+'''def add_question(new_question):
     with open(question_path, 'a') as csvfile:
         writer = csv.DictWriter(csvfile, question_header)
-        writer.writerow(new_question)
+        writer.writerow(new_question)'''
 
 
-def add_answer(new_answer):
-    with open(answer_path, 'a') as csvfile:
-        writer = csv.DictWriter(csvfile, answer_header)
-        writer.writerow(new_answer)
+@database_common.connection_handler
+def add_question(cursor, new_question):
+    cursor.execute("""
+                        INSERT INTO question(id, submission_time, view_number, vote_number, title, message, image) 
+                        VALUES (%(id)s,%(submission_time)s, %(view_number)s, %(vote_number)s,%(title)s,%(message)s,
+                        %(image)s);
+                        """, new_question)
+
+
+@database_common.connection_handler
+def add_answer(cursor, new_answer):
+    cursor.execute("""
+                            INSERT INTO answer(id, submission_time, vote_number,question_id, message, image) 
+                            VALUES (%(id)s,%(submission_time)s, %(vote_number)s, %(question_id)s,%(message)s,
+                            %(image)s);
+                            """, new_answer)
 
 
 def sorted_by_submission_time(list_of_dicts):
@@ -95,10 +149,10 @@ def sorted_by_submission_time(list_of_dicts):
 
 
 def get_new_question_id():
-    questions = read_question()
+    questions = read_all_questions()
     max_id = "0"
     for i in questions:
-        if max_id < i['id']:
+        if int(max_id) < int(i['id']):
             max_id = i['id']
     max_id = int(max_id) + 1
     return str(max_id)
@@ -108,7 +162,7 @@ def get_new_answer_id():
     answers = read_answer()
     max_id = "0"
     for i in answers:
-        if max_id < i['id']:
+        if int(max_id) < int(i['id']):
             max_id = i['id']
     max_id = int(max_id) + 1
     return str(max_id)

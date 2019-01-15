@@ -2,32 +2,44 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>{{this_question['title']}} </title>
+    <title>{{questions.title}} </title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>{{this_question['title']}}</h1>
-    <h3>{{this_question['message']}}</h3>
-    <h6>
-        <p>Viewed: {{this_question['view_number']}}</p>
-        <p>Votes: {{this_question['vote_number']}}</p>
-        <p>Posted: {{this_question['submission_time']}} </p>
-    </h6>
-    <p></p>
-    <h4><a href="/"><- back</a> ------- ><a href="/question/{{ this_question['id'] }}/new-answer">Answer!</a> ------ <a href="/delete-question/{{ this_question['id'] }}", >Delete this question</a></h4>
-    <p></p>
-    <h4>Answers:</h4>
-    {% for i in answers_list: %}
-    <p>
-    <h3>{{i['message']}}</h3>
-    </p>
-    <p>Votes: {{i['vote_number']}} <a href="">▲</a> <a href="">▼</a>  Posted: {{i['submission_time']}}
-        <form method="POST" action="/answer/{{ this_question['id'] }}/delete">
-        <input type="hidden" value="{{i['id']}}" name="answer_id" id="answer_id">
-        <input type="submit" value="Delete">
-        </form>
-    </p>
-    <p></p>
+{% block content %}
+    {% for question in questions %}
+        <h1>{{question.title}}</h1><br>
+        <h4>{{question.message}}</h4><br>
+        <h6>
+        <p>{{'View Number: '+question.view_number|string}}</p>
+        <p>{{'Votes: '+question.vote_number|string}}</p>
+        <p>{{'Posted: '+question.submission_time|string}} </p>
+        </h6>
+        <p></p>
+        <h4><a href="/"><- back</a> ------- ><a href="/question/{{question.id}}/new-answer">Answer!</a> ------ <a href="/delete-question/{{question.id}}", >Delete this question</a></h4>
+        <p></p>
+    {% endfor %}
+     <h4>Answers:</h4>
+    {% for answer in answers_list %}
+        <p>
+        <h3>{{answer.message}}</h3>
+        </p>
+        <p>Votes: {{answer.vote_number}} <a href="">▲</a> <a href="">▼</a>  Posted: {{answer.submission_time}}
+            {% for question in questions %}
+                <form method="POST" action="/answer/{{ question.id}}/delete">
+            {% endfor %}
+            <input type="hidden" value="{{answer.id}}" name="answer_id" id="answer_id">
+            <input type="submit" value="Delete">
+            </form>
+            {% for question in questions %}
+                <form method="POST" action="workinprogress.html">  <!-- Need to make an edit_question function -->
+            {% endfor %}
+            <input type="hidden" value="{{answer.id}}" name="answer_id" id="answer_id">
+            <input type="submit" value="Edit Answer">
+            </form>
+        </p>
+        <p></p>
     {%endfor%}
+{% endblock %}
 </body>
 </html>

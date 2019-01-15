@@ -23,9 +23,23 @@ def mainpage():
 
 @app.route('/question/<num>')
 def question(num):
-    this_question=data_manager.read_a_question(num)
-    answers_list=data_manager.answer_by_question_id(num)
-    return render_template("question.html", num=num, this_question=this_question, answers_list=answers_list)
+    questions = data_manager.read_a_question(num)
+    answers_list = data_manager.answer_by_question_id(num)
+    return render_template("question.html", num=num, questions=questions, answers_list=answers_list)
+
+# Need to implement vote up ---> Help implement this function please
+'''@app.route('/question/<num>/vote_up', methods=['GET', 'POST'])
+def vote_up_answer(num):
+    if request.method == 'POST':
+        data_manager.vote_up(num)
+    return redirect('/question/<num>')'''
+
+
+@app.route('/trying')
+def trying():
+    this_question = data_manager.read_a_question(2)
+    answers_list = data_manager.answer_by_question_id(1)
+    return render_template('testing.html', questions=this_question, answers=answers_list)
 
 
 @app.route('/question/<num>/new-answer')
@@ -64,7 +78,8 @@ def submit_question():
 def submit_answer():
     if request.method == 'POST':
         id_ = data_manager.get_new_answer_id()
-        submission_time = data_manager.get_current_unix_timestamp()
+        # submission_time = data_manager.get_current_unix_timestamp()
+        submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
         votes = 0
         question_id = request.form['question_id']
         message = request.form['message']

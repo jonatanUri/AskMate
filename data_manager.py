@@ -98,8 +98,8 @@ def delete_answer(cursor, id_):
 @database_common.connection_handler
 def delete_question(cursor, id_):
     cursor.execute("""
-                        DELETE FROM question WHERE id= %(id_)s;
-                        DELETE FROM answer WHERE question_id= %(id_)s
+                        DELETE FROM answer WHERE question_id= %(id_)s;
+                        DELETE FROM question WHERE id= %(id_)s
                         """,
                    {'id_': id_})
 
@@ -171,3 +171,24 @@ def get_new_answer_id():
 def get_current_unix_timestamp():
     current_time = time.time()
     return int(current_time)
+
+
+@database_common.connection_handler
+def vote_up(cursor, id_):
+    cursor.execute("""
+                  UPDATE answers
+                  SET vote_number=vote_number+1
+                  WHERE id=%(id_)s ;
+                  """,
+                   {'id_': id_})
+
+
+@database_common.connection_handler
+def vote_down(cursor, id_):
+    cursor.execute("""
+                  UPDATE answers
+                  SET vote_number=vote_number-1
+                  WHERE id=%(id_)s ;
+                  """,
+                   {'id_': id_})
+

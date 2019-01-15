@@ -88,6 +88,15 @@ def convert_time(unix_timestamp):
 
 
 @database_common.connection_handler
+def update_answer(cursor, answer_update, id_):
+        cursor.execute("""
+                            UPDATE answer
+                            SET message=%(answer_update)s
+                            WHERE id= %(id_)s
+                            """, {'answer_update': answer_update, 'id_': id_})
+
+
+@database_common.connection_handler
 def delete_answer(cursor, id_):
     cursor.execute("""
                     DELETE FROM answer WHERE id= %(id_)s 
@@ -191,4 +200,13 @@ def vote_down(cursor, id_):
                   WHERE id=%(id_)s ;
                   """,
                    {'id_': id_})
+
+
+@database_common.connection_handler
+def get_this_answer(cursor, question_id_, answer_id_):
+    cursor.execute("""
+                    SELECT message FROM answer  where id=%(answer_id_)s AND question_id=%(question_id_)s ;
+                    """, {'question_id_': question_id_, 'answer_id_': answer_id_})
+    answers = cursor.fetchall()
+    return answers
 

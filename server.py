@@ -38,8 +38,8 @@ def vote_up_answer(num):
 @app.route('/trying')
 def trying():
     this_question = data_manager.read_a_question(2)
-    answers_list = data_manager.answer_by_question_id(1)
-    return render_template('testing.html', questions=this_question, answers=answers_list)
+    #answers_list = data_manager.get_this_answer(1, 3)
+    return render_template('testing.html', questions=this_question)
 
 
 @app.route('/question/<num>/new-answer')
@@ -101,10 +101,21 @@ def delete_question(num):
     return redirect('/list')
 
 
-@app.route('/answer/<num>/delete', methods=['POST'])
-def delete_answer(num):
-    data_manager.delete_answer(request.form['answer_id'])
+@app.route('/answer/<num>/delete-answer/<answer_id>')
+def delete_answer(num, answer_id):
+    data_manager.delete_answer(answer_id)
     return redirect('/question/'+num)
+
+
+@app.route('/question/<num>/edit-answer/<answer_id>', methods=['GET', 'POST'])
+def route_edit_answer(num, answer_id):
+    if request.method == 'POST':
+        update = request.form['message']
+        data_manager.update_answer(update, answer_id)
+        return redirect('/question/'+num)
+    elif request.method == 'GET':
+        answer = data_manager.get_this_answer(num, answer_id)
+        return render_template("edit-answer.html", answer_id=answer_id, answer=answer, num=num)
 
 
 if __name__ == "__main__":

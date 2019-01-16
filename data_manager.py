@@ -125,11 +125,13 @@ def delete_answer(cursor, id_):
 @database_common.connection_handler
 def delete_question(cursor, id_):
     cursor.execute("""
+                    DELETE FROM comment WHERE question_id=%(question_id_)s
+                    """, {'question_id_': id_})
+    cursor.execute("""
                         DELETE FROM answer WHERE question_id= %(id_)s;
                         DELETE FROM question WHERE id= %(id_)s
                         """,
                    {'id_': id_})
-
 
 
 '''def rewrite_csv(data, path, header):
@@ -237,7 +239,7 @@ def comment_on_question(cursor, new_comment):
 @database_common.connection_handler
 def read_q_comments(cursor, id_):
     cursor.execute("""
-                        SELECT message, submission_time FROM comment  where question_id=%(id_)s;
+                        SELECT message, submission_time, id FROM comment  where question_id=%(id_)s;
                         """, {'id_': id_})
     comments = cursor.fetchall()
     return comments
@@ -251,3 +253,9 @@ def get_this_answer(cursor, question_id_, answer_id_):
     answers = cursor.fetchall()
     return answers
 
+
+@database_common.connection_handler
+def delete_comment(cursor, question_id_, comment_id_):
+    cursor.execute("""
+                    DELETE FROM comment WHERE question_id=%(question_id_)s AND id= %(comment_id_)s
+                    """, {'question_id_': question_id_, 'comment_id_': comment_id_})

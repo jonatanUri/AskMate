@@ -31,7 +31,7 @@
             {% endfor %}
 
             {% for question in questions %}
-            <a href="/question/{{ question.id}}/edit-answer/{{ answer.id }}">Update</a>
+            <a href="/question/{{ num|int}}/edit-answer/{{ answer.id }}">Update</a>
             {% endfor %}
         </p>
         <p></p>

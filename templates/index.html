@@ -12,5 +12,7 @@
     <p><a href="question/{{ i['id'] }}" class="question-title"><h3>{{ i['title'] }}</h3></a></p>
     <h4 class="question-message">{{i['message']}}</h4>
     {% endfor %}
+    <h3><a href="{{ url_for('home_redirect') }}">Less</a></h3>
+    <h3><a href="{{ url_for('mainpage') }}">More</a> </h3>
 </body>
 </html>

@@ -11,7 +11,8 @@ def workinprogress():
 
 @app.route('/')
 def home_redirect():
-    return redirect('/list')
+    questions_dict=data_manager.read_latest_five_questions()
+    return render_template("index.html", questions_dict=questions_dict)
 
 
 @app.route('/list')
@@ -117,6 +118,31 @@ def route_edit_answer(num, answer_id):
     elif request.method == 'GET':
         answer = data_manager.get_this_answer(num, answer_id)
         return render_template("edit-answer.html", answer_id=answer_id, answer=answer, num=num)
+
+
+@app.route('/question/<num>/q-comment')
+def submit_q_comment(num):
+    comments = data_manager.read_q_comments(num)
+    return render_template('q-comment.html', num=num, comments=comments)
+
+
+@app.route('/comment', methods=['POST'])
+def comment_on_question():
+    if request.method == 'POST':
+        id_ = data_manager.get_new_comment_id()
+        submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
+        question_id = request.form['question_id']
+        message = request.form['comment']
+        comment_dict = {
+            'id': id_,
+            'question_id': question_id,
+            'answer_id': None,
+            'message': message,
+            'submission_time': submission_time,
+            'edited_count': None
+            }
+        data_manager.comment_on_question(comment_dict)
+        return redirect('/question/question_id/q-comment')
 
 
 if __name__ == "__main__":

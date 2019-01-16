@@ -17,7 +17,7 @@
         </h6>
         <p></p>
         <h4><a href="/">Back</a> ------- <a href="/question/{{question.id}}/new-answer">Answer</a> ------ <a href="/delete-question/{{question.id}}", >Delete this question</a>
-        ------<a href="/question/{{ question.id }}/q-comment">Comments</a> </h4>
+        ------<a href="/question/{{ question.id|int}}/q-comment">Comments</a> </h4>
         <p></p>
     {% endfor %}
      <h4>Answers:</h4>

@@ -142,7 +142,7 @@ def comment_on_question():
             'edited_count': None
             }
         data_manager.comment_on_question(comment_dict)
-        return redirect('/question/question_id/q-comment')
+        return redirect('/question/'+question_id+'/q-comment')
 
 
 if __name__ == "__main__":

@@ -30,6 +30,17 @@ def read_all_questions(cursor):
 
 
 @database_common.connection_handler
+def read_latest_five_questions(cursor):
+    cursor.execute("""
+                    SELECT * FROM question
+                    ORDER BY id DESC
+                    LIMIT 5;
+                    """)
+    questions = cursor.fetchall()
+    return questions
+
+
+@database_common.connection_handler
 def answer_by_question_id(cursor, id_):
     cursor.execute("""
                     SELECT * FROM answer  where question_id=%(id_)s;

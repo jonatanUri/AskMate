@@ -11,7 +11,8 @@ def workinprogress():
 
 @app.route('/')
 def home_redirect():
-    return redirect('/list')
+    questions_dict=data_manager.read_latest_five_questions()
+    return render_template("index.html", questions_dict=questions_dict)
 
 
 @app.route('/list')

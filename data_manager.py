@@ -30,6 +30,17 @@ def read_all_questions(cursor):
 
 
 @database_common.connection_handler
+def read_latest_five_questions(cursor):
+    cursor.execute("""
+                    SELECT * FROM question
+                    ORDER BY id DESC
+                    LIMIT 5;
+                    """)
+    questions = cursor.fetchall()
+    return questions
+
+
+@database_common.connection_handler
 def answer_by_question_id(cursor, id_):
     cursor.execute("""
                     SELECT * FROM answer  where question_id=%(id_)s;
@@ -92,6 +103,15 @@ def convert_time(unix_timestamp):
         if id_ == answer['id']:
             answers.remove(answer)
     rewrite_csv(answers, answer_path, answer_header)'''
+
+
+@database_common.connection_handler
+def update_answer(cursor, answer_update, id_):
+        cursor.execute("""
+                            UPDATE answer
+                            SET message=%(answer_update)s
+                            WHERE id= %(id_)s
+                            """, {'answer_update': answer_update, 'id_': id_})
 
 
 @database_common.connection_handler
@@ -221,4 +241,13 @@ def read_q_comments(cursor, id_):
                         """, {'id_': id_})
     comments = cursor.fetchall()
     return comments
+
+
+@database_common.connection_handler
+def get_this_answer(cursor, question_id_, answer_id_):
+    cursor.execute("""
+                    SELECT message FROM answer  where id=%(answer_id_)s AND question_id=%(question_id_)s ;
+                    """, {'question_id_': question_id_, 'answer_id_': answer_id_})
+    answers = cursor.fetchall()
+    return answers
 

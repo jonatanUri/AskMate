@@ -27,20 +27,15 @@
         </p>
         <p>Votes: {{answer.vote_number}} <a href="">▲</a> <a href="">▼</a>  Posted: {{answer.submission_time}}
             {% for question in questions %}
-                <form method="POST" action="/answer/{{ question.id}}/delete">
+                <a href="/answer/{{ question.id}}/delete-answer/{{ answer.id }}"> Delete </a>
             {% endfor %}
-            <input type="hidden" value="{{answer.id}}" name="answer_id" id="answer_id">
-            <input type="submit" value="Delete">
-            </form>
+
             {% for question in questions %}
-                <form method="POST" action="workinprogress.html">  <!-- Need to make an edit_question function -->
+            <a href="/question/{{ question.id}}/edit-answer/{{ answer.id }}">Update</a>
             {% endfor %}
-            <input type="hidden" value="{{answer.id}}" name="answer_id" id="answer_id">
-            <input type="submit" value="Edit Answer">
-            </form>
         </p>
         <p></p>
-    {%endfor%}
+        {%endfor%}
 {% endblock %}
 </body>
 </html>

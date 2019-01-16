@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+    <h1>Fill the form</h1>
+<form method="POST" action="/question/{{num}}/edit-answer/{{answer_id}}">
+<h3>
+    Message:
+    <br>
+    {% for message in answer %}
+        <textarea name="message" id="message" rows="6" cols="40" minlength="10">{{ message.message}}</textarea>
+    {% endfor %}
+    <input type="hidden" value="{{num}}" name="question_id" id="question_id" />
+    <br>
+    <input type="submit" value="Submit">
+</h3>
+</form>
+{% endblock %}
+
+</body>
+</html>

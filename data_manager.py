@@ -136,11 +136,13 @@ def delete_answer(cursor, id_):
 @database_common.connection_handler
 def delete_question(cursor, id_):
     cursor.execute("""
+                    DELETE FROM comment WHERE question_id=%(question_id_)s
+                    """, {'question_id_': id_})
+    cursor.execute("""
                         DELETE FROM answer WHERE question_id= %(id_)s;
                         DELETE FROM question WHERE id= %(id_)s
                         """,
                    {'id_': id_})
-
 
 
 '''def rewrite_csv(data, path, header):
@@ -239,7 +241,6 @@ def vote_down(cursor, id_):
                   ,
                    {'id_': id_})"""
 
-
 @database_common.connection_handler
 def comment_on_question(cursor, new_comment):
     cursor.execute("""INSERT INTO comment (id, question_id, answer_id, message, submission_time, edited_count)
@@ -272,3 +273,9 @@ def get_this_comment(cursor, question_id_, comment_id_):
     answers = cursor.fetchall()
     return answers
 
+
+@database_common.connection_handler
+def delete_comment(cursor, question_id_, comment_id_):
+    cursor.execute("""
+                    DELETE FROM comment WHERE question_id=%(question_id_)s AND id= %(comment_id_)s
+                    """, {'question_id_': question_id_, 'comment_id_': comment_id_})

@@ -55,6 +55,13 @@ def read_answer(cursor):
     answers = cursor.fetchall()
     return answers
 
+@database_common.connection_handler
+def read_comments(cursor):
+    cursor.execute("""
+                    SELECT * FROM comment;""")
+    comments = cursor.fetchall()
+    return comments
+
 
 '''def read_csv(path):
     with open(path, "r") as questions:
@@ -167,28 +174,51 @@ def get_new_answer_id():
     max_id = int(max_id) + 1
     return str(max_id)
 
+def get_new_comment_id():
+    comments = read_comments()
+    max_id = "0"
+    for i in comments:
+        if int(max_id) < int(i['id']):
+            max_id = i['id']
+    max_id = int(max_id) + 1
+    return str(max_id)
+
 
 def get_current_unix_timestamp():
     current_time = time.time()
     return int(current_time)
 
 
-@database_common.connection_handler
+"""@database_common.connection_handler
 def vote_up(cursor, id_):
-    cursor.execute("""
+    cursor.execute(
                   UPDATE answers
                   SET vote_number=vote_number+1
                   WHERE id=%(id_)s ;
-                  """,
-                   {'id_': id_})
+                  ,
+                   {'id_': id_}"""
+
+
+"""@database_common.connection_handler
+def vote_down(cursor, id_):
+    cursor.execute(
+                  #UPDATE answers
+                  #SET vote_number=vote_number-1
+                  #WHERE id=%(id_)s ;
+                  ,
+                   {'id_': id_})"""
+
+@database_common.connection_handler
+def comment_on_question(cursor, new_comment):
+    cursor.execute("""INSERT INTO comment (id, question_id, answer_id, message, submission_time, edited_count)
+                        VALUES (%(id)s, %(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s, %(edited_count)s);""", new_comment)
 
 
 @database_common.connection_handler
-def vote_down(cursor, id_):
+def read_q_comments(cursor, id_):
     cursor.execute("""
-                  UPDATE answers
-                  SET vote_number=vote_number-1
-                  WHERE id=%(id_)s ;
-                  """,
-                   {'id_': id_})
+                        SELECT message, submission_time FROM comment  where question_id=%(id_)s;
+                        """, {'id_': id_})
+    comments = cursor.fetchall()
+    return comments
 

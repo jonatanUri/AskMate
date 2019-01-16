@@ -28,11 +28,11 @@ def question(num):
     return render_template("question.html", num=num, questions=questions, answers_list=answers_list)
 
 # Need to implement vote up ---> Help implement this function please
-'''@app.route('/question/<num>/vote_up', methods=['GET', 'POST'])
+@app.route('/question/<num>/vote_up', methods=['GET', 'POST'])
 def vote_up_answer(num):
     if request.method == 'POST':
         data_manager.vote_up(num)
-    return redirect('/question/<num>')'''
+    return redirect('/question/<num>')
 
 
 @app.route('/trying')
@@ -105,6 +105,30 @@ def delete_question(num):
 def delete_answer(num):
     data_manager.delete_answer(request.form['answer_id'])
     return redirect('/question/'+num)
+
+
+@app.route('/question/<num>/q-comment')
+def submit_q_comment(num):
+    comments = data_manager.read_q_comments(num)
+    return render_template('q-comment.html', num=num, comments=comments)
+
+@app.route('/comment', methods=['POST'])
+def comment_on_question():
+    if request.method == 'POST':
+        id_ = data_manager.get_new_comment_id()
+        submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
+        question_id = request.form['question_id']
+        message = request.form['comment']
+        comment_dict = {
+            'id': id_,
+            'question_id': question_id,
+            'answer_id': None,
+            'message': message,
+            'submission_time': submission_time,
+            'edited_count': None
+            }
+        data_manager.comment_on_question(comment_dict)
+        return redirect('/question/question_id/q-comment')
 
 
 if __name__ == "__main__":

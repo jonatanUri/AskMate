@@ -251,3 +251,15 @@ def get_this_answer(cursor, question_id_, answer_id_):
     answers = cursor.fetchall()
     return answers
 
+@database_common.connection_handler
+def read_a_comments(cursor, id_):
+    cursor.execute("""
+                        SELECT message, submission_time FROM comment  where answer_id=%(id_)s;
+                        """, {'id_': id_})
+    comments = cursor.fetchall()
+    return comments
+
+@database_common.connection_handler
+def comment_on_answer_question(cursor, new_comment):
+    cursor.execute("""INSERT INTO comment (id, question_id, answer_id, message, submission_time, edited_count)
+                        VALUES (%(id)s, %(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s, %(edited_count)s);""", new_comment)

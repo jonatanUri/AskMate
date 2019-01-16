@@ -144,6 +144,30 @@ def comment_on_question():
         data_manager.comment_on_question(comment_dict)
         return redirect('/question/'+question_id+'/q-comment')
 
+@app.route('/question/<num>/a-comment/<answer_id>')
+def answer_comments(num, answer_id):
+    comments = data_manager.read_a_comments(answer_id)
+    return render_template('a-comment.html', num=num, answer_id=answer_id, comments=comments)
+
+@app.route('/answercomment', methods=['POST'])
+def comment_on_answer():
+    if request.method == 'POST':
+        id_ = data_manager.get_new_comment_id()
+        submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
+        question_id = request.form['question_id']
+        answer_id = request.form['answer_id']
+        message = request.form['comment']
+        answer_comment_dict = {
+            'id': id_,
+            'question_id': None,
+            'answer_id': answer_id,
+            'message': message,
+            'submission_time': submission_time,
+            'edited_count': None
+        }
+        data_manager.comment_on_answer_question(answer_comment_dict)
+        return redirect('/question/'+question_id+'/a-comment/'+answer_id)
+
 
 if __name__ == "__main__":
     app.run()

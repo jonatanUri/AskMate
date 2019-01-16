@@ -40,8 +40,8 @@ def vote_up_answer(num):
 @app.route('/trying')
 def trying():
     this_question = data_manager.read_a_question(2)
-    #answers_list = data_manager.get_this_answer(1, 3)
-    return render_template('testing.html', questions=this_question)
+    answers_list = data_manager.get_this_comment(0, 1)
+    return render_template('testing.html', questions=this_question,answer=answers_list)
 
 
 @app.route('/question/<num>/new-answer')
@@ -143,6 +143,18 @@ def comment_on_question():
             }
         data_manager.comment_on_question(comment_dict)
         return redirect('/question/'+question_id+'/q-comment')
+
+
+@app.route('/question/<num>/q-comment/edit-comment/<comment_id>', methods=['GET', 'POST'])
+def edit_comment(num, comment_id):
+    if request.method == 'POST':
+        update = request.form['message']
+        data_manager.update_comment(update, num, comment_id)
+        return redirect('/question/' + num+'/q-comment')
+    elif request.method == 'GET':
+        comment = data_manager.get_this_comment(num, comment_id)
+        return render_template("edit-question-comment.html", comment_id=comment_id, comment=comment, num=num)
+
 
 
 if __name__ == "__main__":

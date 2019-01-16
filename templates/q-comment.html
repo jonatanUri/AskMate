@@ -21,7 +21,9 @@
     <h4>
         {{ comment.message }}
         {{ comment.submission_time }}
+
     </h4>
+        <h5><a href="/question/{{ num }}/q-comment/edit-comment/{{ comment.id }}">Edit </a> </h5>
     {% endfor %}
 </div>
 </body>

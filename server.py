@@ -40,8 +40,8 @@ def vote_up_answer(num):
 @app.route('/trying')
 def trying():
     this_question = data_manager.read_a_question(2)
-    #answers_list = data_manager.get_this_answer(1, 3)
-    return render_template('testing.html', questions=this_question)
+    answers_list = data_manager.get_this_comment(0, 1)
+    return render_template('testing.html', questions=this_question,answer=answers_list)
 
 
 @app.route('/question/<num>/new-answer')
@@ -106,7 +106,14 @@ def delete_question(num):
 @app.route('/answer/<num>/delete-answer/<answer_id>')
 def delete_answer(num, answer_id):
     data_manager.delete_answer(answer_id)
+    data_manager.delete_comment(num)
     return redirect('/question/'+num)
+
+
+@app.route('/question/<num>/q-comment/<comment_id_>')
+def delete_comment(num, comment_id_):
+    data_manager.delete_comment(num, comment_id_)
+    return redirect('/question/'+num+'/q-comment')
 
 
 @app.route('/question/<num>/edit-answer/<answer_id>', methods=['GET', 'POST'])
@@ -167,6 +174,18 @@ def comment_on_answer():
         }
         data_manager.comment_on_answer_question(answer_comment_dict)
         return redirect('/question/'+question_id+'/a-comment/'+answer_id)
+
+
+@app.route('/question/<num>/q-comment/edit-comment/<comment_id>', methods=['GET', 'POST'])
+def edit_comment(num, comment_id):
+    if request.method == 'POST':
+        update = request.form['message']
+        data_manager.update_comment(update, num, comment_id)
+        return redirect('/question/' + num+'/q-comment')
+    elif request.method == 'GET':
+        comment = data_manager.get_this_comment(num, comment_id)
+        return render_template("edit-question-comment.html", comment_id=comment_id, comment=comment, num=num)
+
 
 
 if __name__ == "__main__":

@@ -109,9 +109,20 @@ def convert_time(unix_timestamp):
 def update_answer(cursor, answer_update, id_):
         cursor.execute("""
                             UPDATE answer
-                            SET message=%(answer_update)s
-                            WHERE id= %(id_)s
+                            SET message =%(answer_update)s
+                            WHERE id= %(id_)s;
                             """, {'answer_update': answer_update, 'id_': id_})
+
+
+@database_common.connection_handler
+def update_comment(cursor, comment_update, question_id_, comment_id_):
+        cursor.execute("""
+                            UPDATE comment
+                            SET message=%(comment_update)s
+                            WHERE question_id=%(question_id_)s AND id= %(comment_id_)s
+                            """, {'comment_update': comment_update, 'question_id_': question_id_,
+                                  'comment_id_': comment_id_})
+
 
 
 @database_common.connection_handler
@@ -124,6 +135,9 @@ def delete_answer(cursor, id_):
 
 @database_common.connection_handler
 def delete_question(cursor, id_):
+    cursor.execute("""
+                    DELETE FROM comment WHERE question_id=%(question_id_)s
+                    """, {'question_id_': id_})
     cursor.execute("""
                         DELETE FROM answer WHERE question_id= %(id_)s;
                         DELETE FROM question WHERE id= %(id_)s
@@ -237,7 +251,7 @@ def comment_on_question(cursor, new_comment):
 @database_common.connection_handler
 def read_q_comments(cursor, id_):
     cursor.execute("""
-                        SELECT message, submission_time FROM comment  where question_id=%(id_)s;
+                        SELECT message, submission_time,id FROM comment  where question_id=%(id_)s;
                         """, {'id_': id_})
     comments = cursor.fetchall()
     return comments
@@ -263,3 +277,18 @@ def read_a_comments(cursor, id_):
 def comment_on_answer_question(cursor, new_comment):
     cursor.execute("""INSERT INTO comment (id, question_id, answer_id, message, submission_time, edited_count)
                         VALUES (%(id)s, %(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s, %(edited_count)s);""", new_comment)
+
+@database_common.connection_handler
+def get_this_comment(cursor, question_id_, comment_id_):
+    cursor.execute("""
+                    SELECT message FROM comment WHERE question_id=%(question_id_)s AND id=%(comment_id_)s;
+                    """, {'question_id_': question_id_, 'comment_id_': comment_id_})
+    answers = cursor.fetchall()
+    return answers
+
+
+@database_common.connection_handler
+def delete_comment(cursor, question_id_, comment_id_):
+    cursor.execute("""
+                    DELETE FROM comment WHERE question_id=%(question_id_)s AND id= %(comment_id_)s
+                    """, {'question_id_': question_id_, 'comment_id_': comment_id_})

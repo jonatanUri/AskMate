@@ -4,14 +4,13 @@
     <meta charset="utf-8">
     <title> Yeet </title>
     <link rel="stylesheet" href="/static/style.css">
+    <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>WELKOM!</h1></div>
 </head>
 <body>
-    <h1>WELKOM!</h1>
-    <p><a href="/new-question" class="btn">ASK A QUESTION!</a></p>
+    <a href="/new-question" class="btn">ASK A QUESTION!</a>
     {% for i in questions_dict %}
-    <p><a href="question/{{ i['id'] }}"><h3>{{ i['title'] }}</h3></a></p>
-    <h4>{{i['message']}}</h4>
-        <a href="{{ url_for('trying') }}">TESTING</a> <br>
+    <p><a href="question/{{ i['id'] }}" class="question-title"><h3>{{ i['title'] }}</h3></a></p>
+    <h4 class="question-message">{{i['message']}}</h4>
     {% endfor %}
 </body>
 </html>

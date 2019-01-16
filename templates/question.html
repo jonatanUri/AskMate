@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <title>{{questions.title}} </title>
     <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-{% block content %}
+    {% block content %}
     {% for question in questions %}
-        <h1>{{question.title}}</h1><br>
-        <h4>{{question.message}}</h4><br>
+    <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>{{question.title}}</h1></div>
+</head>
+<body><br>
+        <h4 class="question-message">{{question.message}}</h4><br>
         <h6>
         <p>{{'View Number: '+question.view_number|string}}</p>
         <p>{{'Votes: '+question.vote_number|string}}</p>

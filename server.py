@@ -27,6 +27,7 @@ def question(num):
     answers_list = data_manager.answer_by_question_id(num)
     return render_template("question.html", num=num, questions=questions, answers_list=answers_list)
 
+
 # Need to implement vote up ---> Help implement this function please
 '''@app.route('/question/<num>/vote_up', methods=['GET', 'POST'])
 def vote_up_answer(num):

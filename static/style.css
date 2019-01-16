@@ -4,9 +4,9 @@
         opacity: 1;
     }
 
-    90% {
-        color: aqua;
-        opacity: .3;
+    50% {
+        color: salmon;
+        opacity: 1;
     }
 
     100% {
@@ -15,14 +15,62 @@
     }
 }
 
+.question-title{
+    font-size: 1.5em;
+    transition: 0.2s;
+}
+
+.question-title:hover{
+    color: lightsalmon;
+}
+
+.question-message {
+    font-size: 1.6em;
+    text-align: justify;
+}
+
+.home-button {
+    -webkit-filter: opacity(1) drop-shadow(0 0 0 salmon);
+    position: fixed;
+    left: 2.1em;
+    top: 2.1em;
+    max-height: 3.8em;
+    max-width: 3.8em;
+    transition: 0.2s;
+}
+
+.home-button:hover {
+    -webkit-filter: opacity(1) drop-shadow(-6px -3px 1.5px lightsalmon);
+}
+
+.header {
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    background-color: #f0f8fc;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    text-align: left;
+}
+
 body {
     background-color: #444444;
-    text-align: center;
+    text-align: left;
+    margin-top: 10em;
+    margin-left: 10em;
+    margin-right: 10em;
 }
 
 h1 {
+    position: relative;
+    margin: 0.2em 0;
+    left: 2em;
+    max-width: calc(100% - 2.1em);
+    max-height: 92px;
 	animation: flash linear 3s infinite;
-    font-size: 50px;
+    font-size: 5em;
     color: lightsalmon;
     font-family: 'Staatliches', cursive;
 }
@@ -38,18 +86,22 @@ a:visited {
     color: #f0f8fc
 }
 
+.comment {
+    text-align: right;
+}
 
 .btn {
-  display: inline-block;
-  margin: 0.8em;
-  text-transform: uppercase;
-  padding: 0.8em 1.2em;
-  background: none;
-  color:white;
-  font-weight: bold;
-  position: relative;
-  transition:color 0.25s ease;
-  border:3px solid white;
+    display: inline-block;
+    margin: 1em 0;
+    text-transform: uppercase;
+    padding: 0.8em 1.2em;
+    background: none;
+    color:white;
+    font-size: 1.2em;
+    font-weight: bold;
+    position: relative;
+    transition:color 0.25s ease;
+    border:.2em solid white;
 }
 
 .btn:hover {

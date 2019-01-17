@@ -124,6 +124,16 @@ def update_comment(cursor, comment_update, question_id_, comment_id_):
                                   'comment_id_': comment_id_})
 
 
+@database_common.connection_handler
+def update_answer_comment(cursor, comment_update, answer_id_, comment_id_):
+    cursor.execute("""
+                    UPDATE comment
+                    SET message=%(comment_update)s
+                    WHERE answer_id=%(answer_id_)s AND id=%(comment_id_)s; 
+                    """, {'comment_update': comment_update, 'answer_id_': answer_id_,
+                          'comment_id_': comment_id_})
+
+
 
 @database_common.connection_handler
 def delete_answer(cursor, id_):
@@ -265,10 +275,22 @@ def get_this_answer(cursor, question_id_, answer_id_):
     answers = cursor.fetchall()
     return answers
 
+
+@database_common.connection_handler
+def get_this_answer_comment(cursor, comment_id_):
+    cursor.execute("""
+                    SELECT message FROM comment
+                    WHERE id=%(comment_id_)s
+                    """, {'comment_id_': comment_id_})
+    comment = cursor.fetchall()
+    return comment
+
+
+
 @database_common.connection_handler
 def read_a_comments(cursor, id_):
     cursor.execute("""
-                        SELECT message, submission_time FROM comment  where answer_id=%(id_)s;
+                        SELECT message, submission_time, id FROM comment  where answer_id=%(id_)s;
                         """, {'id_': id_})
     comments = cursor.fetchall()
     return comments

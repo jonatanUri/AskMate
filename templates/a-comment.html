@@ -22,6 +22,7 @@
             <h4>
                 {{ comment.message }}
                 {{ comment.submission_time }}
+                <a href="/question/{{ num }}/a-comment/{{ answer_id }}/edit-comment/{{ comment.id }}">Edit</a>
             </h4>
         {% endfor %}
     </div>

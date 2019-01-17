@@ -106,7 +106,7 @@ def delete_question(num):
 @app.route('/answer/<num>/delete-answer/<answer_id>')
 def delete_answer(num, answer_id):
     data_manager.delete_answer(answer_id)
-    data_manager.delete_comment(num)
+    data_manager.delete_all_comments_from_answer(answer_id)
     return redirect('/question/'+num)
 
 

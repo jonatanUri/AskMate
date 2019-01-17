@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Comment</title>
     <link rel="stylesheet" href="/static/style.css">
+    <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>Comments</h1></div>
 </head>
 <body>
 <h1><a href="/question/{{ num }}">Back</a> </h1>
@@ -14,16 +15,16 @@
             <input type="text" name="comment" id="comment">
             <input type="hidden" value="{{ num }}" name="question_id" id="question_id"><br>
             <br>
-            <button type="submit">Submit</button>
+            <button type="submit" class="btn">Submit</button>
         </p>
     </form>
     {% for comment in comments %}
     <h4>
         {{ comment.message }}
         {{ comment.submission_time }}
-        <a href="/question/{{ num }}/q-comment/{{ comment.id }}">Delete</a>
+        <a href="/question/{{ num }}/q-comment/{{ comment.id }}"><img src="/static/images/trash.png" class="icon"> Delete </a><a href="/question/{{ num }}/q-comment/edit-comment/{{ comment.id }}"><img src="/static/images/pencil.png" class="icon"> Edit </a>
     </h4>
-        <h5><a href="/question/{{ num }}/q-comment/edit-comment/{{ comment.id }}">Edit </a> </h5>
+
     {% endfor %}
 </div>
 </body>

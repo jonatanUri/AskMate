@@ -66,6 +66,7 @@ def read_answer(cursor):
     answers = cursor.fetchall()
     return answers
 
+
 @database_common.connection_handler
 def read_comments(cursor):
     cursor.execute("""
@@ -137,6 +138,7 @@ def update_answer_comment(cursor, comment_update, answer_id_, comment_id_):
 
 @database_common.connection_handler
 def delete_answer(cursor, id_):
+    delete_all_comments_from_answer(id_)
     cursor.execute("""
                     DELETE FROM answer WHERE id= %(id_)s 
                     """,
@@ -218,6 +220,7 @@ def get_new_answer_id():
     max_id = int(max_id) + 1
     return str(max_id)
 
+
 def get_new_comment_id():
     comments = read_comments()
     max_id = "0"
@@ -251,6 +254,7 @@ def vote_down(cursor, id_):
                   #WHERE id=%(id_)s ;
                   ,
                    {'id_': id_})"""
+
 
 @database_common.connection_handler
 def comment_on_question(cursor, new_comment):
@@ -295,10 +299,12 @@ def read_a_comments(cursor, id_):
     comments = cursor.fetchall()
     return comments
 
+
 @database_common.connection_handler
 def comment_on_answer_question(cursor, new_comment):
     cursor.execute("""INSERT INTO comment (id, question_id, answer_id, message, submission_time, edited_count)
                         VALUES (%(id)s, %(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s, %(edited_count)s);""", new_comment)
+
 
 @database_common.connection_handler
 def get_this_comment(cursor, question_id_, comment_id_):
@@ -314,3 +320,12 @@ def delete_comment(cursor, question_id_, comment_id_):
     cursor.execute("""
                     DELETE FROM comment WHERE question_id=%(question_id_)s AND id= %(comment_id_)s
                     """, {'question_id_': question_id_, 'comment_id_': comment_id_})
+
+
+
+@database_common.connection_handler
+def delete_answer_comment(cursor, answer_id):
+    cursor.execute("""
+                    DELETE FROM comment WHERE answer_id=%(answer_id)s;""",
+                   {'answer_id': answer_id})
+

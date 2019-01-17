@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Answer</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>Edit comment</h1></div>
 </head>
 <body>
 {% block content %}
-    <h1>Fill the form</h1>
+    <a href="/question/{{num}}/"><h1>Back</h1> </a>
 <form method="POST" action="/question/{{num}}/edit-answer/{{answer_id}}">
 <h3>
     Message:

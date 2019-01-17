@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Question Comment</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>Edit comment</h1></div>
 </head>
 <body>
 {% block content %}
-    <h1>Fill the form</h1>
 <form method="POST" action="/question/{{num}}/q-comment/edit-comment/{{comment_id}}">
 <h3>
-    Message:
+    <h4>Message:</h4>
     <br>
      {% for message in comment %}
         <textarea name="message" id="message" rows="6" cols="40" minlength="10">{{ message.message}}</textarea>
@@ -17,7 +18,7 @@
 
     <input type="hidden" value="{{num}}" name="question_id" id="question_id" />
     <br>
-    <input type="submit" value="Submit">
+    <input type="submit" value="Submit" class="btn">
 </h3>
 </form>
 {% endblock %}

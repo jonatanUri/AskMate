@@ -26,6 +26,7 @@ def mainpage():
 def question(num):
     questions = data_manager.read_a_question(num)
     answers_list = data_manager.answer_by_question_id(num)
+
     return render_template("question.html", num=num, questions=questions, answers_list=answers_list)
 
 
@@ -41,7 +42,7 @@ def vote_up_answer(num):
 def trying():
     this_question = data_manager.read_a_question(2)
     answers_list = data_manager.get_this_comment(0, 1)
-    return render_template('testing.html', questions=this_question,answer=answers_list)
+    return render_template('testing.html', questions=this_question, answer=answers_list)
 
 
 @app.route('/question/<num>/new-answer')
@@ -105,8 +106,8 @@ def delete_question(num):
 
 @app.route('/answer/<num>/delete-answer/<answer_id>')
 def delete_answer(num, answer_id):
-    data_manager.delete_answer(answer_id)
     data_manager.delete_all_comments_from_answer(answer_id)
+    data_manager.delete_answer(answer_id)
     return redirect('/question/'+num)
 
 
@@ -151,10 +152,18 @@ def comment_on_question():
         data_manager.comment_on_question(comment_dict)
         return redirect('/question/'+question_id+'/q-comment')
 
+
 @app.route('/question/<num>/a-comment/<answer_id>')
 def answer_comments(num, answer_id):
     comments = data_manager.read_a_comments(answer_id)
     return render_template('a-comment.html', num=num, answer_id=answer_id, comments=comments)
+
+
+@app.route('/question/<num>/a-comment/<answer_id>/delete-comment/<comment_id>')
+def delete_answer_comment(num, answer_id, comment_id):
+    data_manager.delete_comment_for_answer(answer_id, comment_id)
+    return redirect('/question/'+num+'/a-comment/'+answer_id)
+
 
 @app.route('/answercomment', methods=['POST'])
 def comment_on_answer():

@@ -16,8 +16,12 @@
         <p>{{'Posted: '+question.submission_time|string}} </p>
         </h6>
         <p></p>
-        <h4><a href="/">Back</a> ------- <a href="/question/{{question.id}}/new-answer">Answer</a> ------ <a href="/delete-question/{{question.id}}">Delete this question</a>
-        ------<a href="/question/{{ question.id|int}}/q-comment">Comments</a> </h4>
+        <h4>
+            <a href="/">                                        <img src="/static/images/back-arrow.png" class="icon">  Back</a>
+            <a href="/question/{{question.id}}/new-answer">     <img src="/static/images/pencil.png" class="icon">      Answer</a>
+            <a href="/delete-question/{{question.id}}">         <img src="/static/images/trash.png" class="icon">       Delete this question</a>
+            <a href="/question/{{ question.id|int}}/q-comment"> <img src="/static/images/eye.png" class="icon">         Comments</a>
+        </h4>
         <p></p>
     {% endfor %}
      <h4>Answers:</h4>
@@ -27,13 +31,10 @@
         </p>
         <p>Votes: {{answer.vote_number}} <a href="">▲</a> <a href="">▼</a>  Posted: {{answer.submission_time}}
             {% for question in questions %}
-                <a href="/answer/{{ question.id}}/delete-answer/{{ answer.id }}"> Delete </a>
+            <a href="/answer/{{ question.id}}/delete-answer/{{ answer.id }}">       <img src="/static/images/trash.png" class="icon">     Delete </a>
             {% endfor %}
-
-            {% for question in questions %}
-            <a href="/question/{{ num|int}}/edit-answer/{{ answer.id }}">Update</a>
-            {% endfor %}
-            <a href="/question/{{ num }}/a-comment/{{ answer.id }}">Comments</a>
+            <a href="/question/{{ num|int}}/edit-answer/{{ answer.id }}">           <img src="/static/images/pencil.png" class="icon">  Update</a>
+            <a href="/question/{{ num }}/a-comment/{{ answer.id }}">                <img src="/static/images/eye.png" class="icon">     Comments</a>
         </p>
         <p></p>
         {%endfor%}

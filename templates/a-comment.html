@@ -4,24 +4,26 @@
     <meta charset="UTF-8">
     <title>Comment</title>
     <link rel="stylesheet" href="/static/style.css">
+    <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>Comments</h1></div>
 </head>
 <body>
     <h1><a href="/question/{{ num }}">Back</a> </h1>
     <div class="comment">
-        <form action="/answercomment", method="post">
+        <form action="/answercomment" method="post">
             <p>
-            <label for="comment">Comment:</label><br>
-            <input type="text" name="comment" id="comment">
-            <input type="hidden" value="{{ num }}" name="question_id" id="question_id"><br>
-            <input type="hidden" value="{{ answer_id }}" name="answer_id", id="answer_id"><br>
-            <br>
-            <button type="submit">Submit</button>
+                <label for="comment">Comment:</label><br>
+                <input type="text" name="comment" id="comment">
+                <input type="hidden" value="{{ num }}" name="question_id" id="question_id"><br>
+                <input type="hidden" value="{{ answer_id }}" name="answer_id", id="answer_id"><br>
+                <br>
+                <button type="submit" class="btn">Submit</button>
         </p>
         </form>
         {% for comment in comments %}
             <h4>
                 {{ comment.message }}
                 {{ comment.submission_time }}
+                <a href="/question/{{ num }}/q-comment/{{ comment.id }}"><img src="/static/images/trash.png" class="icon"> Delete </a><a href="/question/{{ num }}/q-comment/edit-comment/{{ comment.id }}"><img src="/static/images/pencil.png" class="icon"> Edit </a>
             </h4>
         {% endfor %}
     </div>

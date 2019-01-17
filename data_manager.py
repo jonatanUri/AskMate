@@ -292,3 +292,10 @@ def delete_comment(cursor, question_id_, comment_id_):
     cursor.execute("""
                     DELETE FROM comment WHERE question_id=%(question_id_)s AND id= %(comment_id_)s
                     """, {'question_id_': question_id_, 'comment_id_': comment_id_})
+
+@database_common.connection_handler
+def delete_answer_comment(cursor, answer_id):
+    cursor.execute("""
+                    DELETE FROM comment WHERE answer_id=%(answer_id)s;""",
+                   {'answer_id': answer_id})
+

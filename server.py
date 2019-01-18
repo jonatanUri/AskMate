@@ -196,7 +196,6 @@ def edit_comment(num, comment_id):
         return render_template("edit-question-comment.html", comment_id=comment_id, comment=comment, num=num)
 
 
-
 @app.route('/question/<num>/a-comment/<answer_id_>/edit-comment/<comment_id_>', methods=['GET', 'POST'])
 def edit_a_comment(num, answer_id_, comment_id_):
     if request.method == 'GET':

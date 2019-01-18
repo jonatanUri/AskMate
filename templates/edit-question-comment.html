@@ -7,6 +7,7 @@
     <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>Edit comment</h1></div>
 </head>
 <body>
+<h2><a href="/question/{{ num }}"><img src="/static/images/back-arrow.png" class="icon">Back</a> </h2>
 {% block content %}
 <form method="POST" action="/question/{{num}}/q-comment/edit-comment/{{comment_id}}">
 <h3>

@@ -10,16 +10,6 @@ question_header = ['id', 'submission_time', 'view_number', 'vote_number', 'title
 answer_header = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
 
 
-'''def read_all_questions():
-    global question_path
-    return read_csv(question_path)
-
-
-def read_answer():
-    global answer_path
-    return read_csv(answer_path)'''
-
-
 @database_common.connection_handler
 def read_all_questions(cursor):
     cursor.execute("""
@@ -75,15 +65,6 @@ def read_comments(cursor):
     return comments
 
 
-'''def read_csv(path):
-    with open(path, "r") as questions:
-        reader = csv.DictReader(questions)
-        myList = []
-        for row in reader:
-            myList.append(row)
-    return myList'''
-
-
 def convert_dict_to_human_readable(list_of_dicts):
     new_csv = []
     for row in list_of_dicts:
@@ -96,14 +77,6 @@ def convert_dict_to_human_readable(list_of_dicts):
 def convert_time(unix_timestamp):
     readable_time = time.ctime(int(unix_timestamp))
     return readable_time
-
-
-'''def delete_answer(id_):
-    answers = read_answer()
-    for answer in answers:
-        if id_ == answer['id']:
-            answers.remove(answer)
-    rewrite_csv(answers, answer_path, answer_header)'''
 
 
 @database_common.connection_handler
@@ -126,39 +99,30 @@ def update_comment(cursor, comment_update, question_id_, comment_id_):
 
 
 @database_common.connection_handler
-def delete_answer(cursor, id_):
-    delete_all_comments_from_answer(id_)
+def update_answer_comment(cursor, comment_update, answer_id_, comment_id_):
     cursor.execute("""
-                    DELETE FROM answer WHERE id= %(id_)s 
-                    """,
-                   {'id_': id_})
-
+                    UPDATE comment
+                    SET message=%(comment_update)s
+                    WHERE answer_id=%(answer_id_)s AND id=%(comment_id_)s; 
+                    """, {'comment_update': comment_update, 'answer_id_': answer_id_,
+                          'comment_id_': comment_id_})
 
 @database_common.connection_handler
-def delete_question(cursor, id_):
+def delete_all_comments_from_answer(cursor, id_):
     cursor.execute("""
-                    DELETE FROM comment WHERE question_id=%(question_id_)s
-                    """, {'question_id_': id_})
-    cursor.execute("""
-                        DELETE FROM answer WHERE question_id= %(id_)s;
-                        DELETE FROM question WHERE id= %(id_)s
+                        DELETE FROM comment WHERE answer_id=%(id_)s 
                         """,
                    {'id_': id_})
 
 
 
-'''def rewrite_csv(data, path, header):
-    with open(path, 'w') as csvfile:
-        writer = csv.DictWriter(csvfile, header)
-        writer.writeheader()
-        for i in data:
-            writer.writerow(i)'''
 
-
-'''def add_question(new_question):
-    with open(question_path, 'a') as csvfile:
-        writer = csv.DictWriter(csvfile, question_header)
-        writer.writerow(new_question)'''
+@database_common.connection_handler
+def delete_answer(cursor, id_):
+    cursor.execute("""
+                    DELETE FROM answer WHERE id= %(id_)s 
+                    """,
+                   {'id_': id_})
 
 
 @database_common.connection_handler
@@ -270,9 +234,20 @@ def get_this_answer(cursor, question_id_, answer_id_):
 
 
 @database_common.connection_handler
+def get_this_answer_comment(cursor, comment_id_):
+    cursor.execute("""
+                    SELECT message FROM comment
+                    WHERE id=%(comment_id_)s
+                    """, {'comment_id_': comment_id_})
+    comment = cursor.fetchall()
+    return comment
+
+
+
+@database_common.connection_handler
 def read_a_comments(cursor, id_):
     cursor.execute("""
-                        SELECT message, submission_time FROM comment  where answer_id=%(id_)s;
+                        SELECT message, submission_time, id FROM comment  where answer_id=%(id_)s;
                         """, {'id_': id_})
     comments = cursor.fetchall()
     return comments
@@ -299,6 +274,21 @@ def delete_comment(cursor, question_id_, comment_id_):
                     DELETE FROM comment WHERE question_id=%(question_id_)s AND id= %(comment_id_)s
                     """, {'question_id_': question_id_, 'comment_id_': comment_id_})
 
+@database_common.connection_handler
+def delete_comment_for_answer(cursor, answer_id_, comment_id_):
+    cursor.execute("""
+                    DELETE FROM comment WHERE answer_id =%(answer_id_)s AND id= %(comment_id_)s
+                    """, {'answer_id_': answer_id_, 'comment_id_': comment_id_})
+
+
+@database_common.connection_handler
+def delete_all_comments_and_answer_for_a_question(cursor, answer_id_, question_id_):
+    cursor.execute("""
+                    DELETE FROM comment WHERE answer_id =%(answer_id_)s;
+                    """, {'answer_id_': answer_id_})
+    cursor.execute("""
+                        DELETE FROM answer WHERE question_id =%(question_id_)s;
+                        """, {'question_id_': question_id_})
 
 
 @database_common.connection_handler
@@ -306,4 +296,19 @@ def delete_answer_comment(cursor, answer_id):
     cursor.execute("""
                     DELETE FROM comment WHERE answer_id=%(answer_id)s;""",
                    {'answer_id': answer_id})
+
+
+@database_common.connection_handler
+def delete_question(cursor, id_):
+    cursor.execute("""
+                    DELETE FROM comment WHERE question_id=%(question_id_)s;
+                    DELETE FROM comment WHERE answer_id 
+                    IN (SELECT id FROM answer WHERE question_id =%(question_id_)s);
+                    """, {'question_id_': id_})
+    cursor.execute("""
+                        DELETE FROM answer WHERE question_id= %(id_)s;
+                        DELETE FROM question WHERE id= %(id_)s
+                        """,
+                   {'id_': id_})
+
 

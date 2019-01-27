@@ -95,6 +95,10 @@ a:hover {
     text-align: right;
 }
 
+.comment-msg {
+    color: #f0f8fc;
+}
+
 .btn {
     display: inline-block;
     margin: 1em 0;

@@ -107,6 +107,7 @@ def update_answer_comment(cursor, comment_update, answer_id_, comment_id_):
                     """, {'comment_update': comment_update, 'answer_id_': answer_id_,
                           'comment_id_': comment_id_})
 
+
 @database_common.connection_handler
 def delete_all_comments_from_answer(cursor, id_):
     cursor.execute("""

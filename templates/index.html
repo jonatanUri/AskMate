@@ -7,6 +7,7 @@
     <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>WELKOM!</h1></div>
 </head>
 <body>
+    <a href="/all_users">list all users</a>
     <a href="/new-question" class="btn">ASK A QUESTION!</a>
     {% for i in questions_dict %}
     <p><a href="question/{{ i['id'] }}" class="question-title"><h3>{{ i['title'] }}</h3></a></p>

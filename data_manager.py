@@ -1,14 +1,6 @@
-import csv
 import time
-import data_paths
 import os
 import database_common
-
-question_path = data_paths.question_path
-answer_path = data_paths.answer_path
-question_header = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-answer_header = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
-
 
 @database_common.connection_handler
 def read_all_questions(cursor):
@@ -155,30 +147,9 @@ def sorted_by_submission_time(list_of_dicts):
     return list_of_dicts
 
 
-def get_new_question_id():
-    questions = read_all_questions()
+def get_new_id(material):
     max_id = "0"
-    for i in questions:
-        if int(max_id) < int(i['id']):
-            max_id = i['id']
-    max_id = int(max_id) + 1
-    return str(max_id)
-
-
-def get_new_answer_id():
-    answers = read_answer()
-    max_id = "0"
-    for i in answers:
-        if int(max_id) < int(i['id']):
-            max_id = i['id']
-    max_id = int(max_id) + 1
-    return str(max_id)
-
-
-def get_new_comment_id():
-    comments = read_comments()
-    max_id = "0"
-    for i in comments:
+    for i in material:
         if int(max_id) < int(i['id']):
             max_id = i['id']
     max_id = int(max_id) + 1
@@ -188,26 +159,6 @@ def get_new_comment_id():
 def get_current_unix_timestamp():
     current_time = time.time()
     return int(current_time)
-
-
-"""@database_common.connection_handler
-def vote_up(cursor, id_):
-    cursor.execute(
-                  UPDATE answers
-                  SET vote_number=vote_number+1
-                  WHERE id=%(id_)s ;
-                  ,
-                   {'id_': id_}"""
-
-
-"""@database_common.connection_handler
-def vote_down(cursor, id_):
-    cursor.execute(
-                  #UPDATE answers
-                  #SET vote_number=vote_number-1
-                  #WHERE id=%(id_)s ;
-                  ,
-                   {'id_': id_})"""
 
 
 @database_common.connection_handler
@@ -311,5 +262,3 @@ def delete_question(cursor, id_):
                         DELETE FROM question WHERE id= %(id_)s
                         """,
                    {'id_': id_})
-
-

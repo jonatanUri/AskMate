@@ -262,3 +262,10 @@ def delete_question(cursor, id_):
                         DELETE FROM question WHERE id= %(id_)s
                         """,
                    {'id_': id_})
+
+
+@database_common.connection_handler
+def registration(cursor, reg_info):
+    cursor.execute("""INSERT INTO "user" (user_name, user_password,registration_time)
+                   VALUES (%(user_name)s, %(user_password)s, %(registration_time)s)
+                   """, reg_info)

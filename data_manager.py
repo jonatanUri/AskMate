@@ -23,6 +23,14 @@ def read_latest_five_questions(cursor):
 
 
 @database_common.connection_handler
+def read_all_users(cursor):
+    cursor.execute("""
+                    SELECT id, user_name, registration_time FROM user
+                    """)
+    user_data = cursor.fetchall()
+    return user_data
+
+@database_common.connection_handler
 def answer_by_question_id(cursor, id_):
     cursor.execute("""
                     SELECT * FROM answer  where question_id=%(id_)s;

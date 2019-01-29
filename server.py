@@ -35,11 +35,9 @@ def registration():
     if request.method == 'POST':
         hashed_password = hash_password(request.form['candy'])
         user_name = request.form['user_name']
-        registration_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
         reg_dict = {
             'user_name': user_name,
-            'user_password': hashed_password,
-            'registration_time': registration_time
+            'user_password': hashed_password
         }
         data_manager.registration(reg_dict)
         return redirect('/')

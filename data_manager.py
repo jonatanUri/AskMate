@@ -267,5 +267,5 @@ def delete_question(cursor, id_):
 @database_common.connection_handler
 def registration(cursor, reg_info):
     cursor.execute("""INSERT INTO "user" (user_name, user_password,registration_time)
-                   VALUES (%(user_name)s, %(user_password)s, %(registration_time)s)
+                   VALUES (%(user_name)s, %(user_password)s, CURRENT_TIMESTAMP)
                    """, reg_info)

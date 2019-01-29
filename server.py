@@ -58,7 +58,8 @@ def new_question():
 @app.route('/submit-question', methods=['GET', 'POST'])
 def submit_question():
     if request.method == 'POST':
-        id_ = data_manager.get_new_question_id()
+        questions = data_manager.read_all_questions()
+        id_ = data_manager.get_new_id(questions)
         submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
         title = request.form['title']
         message = request.form['message']
@@ -80,7 +81,8 @@ def submit_question():
 @app.route('/submit-answer', methods=['GET', 'POST'])
 def submit_answer():
     if request.method == 'POST':
-        id_ = data_manager.get_new_answer_id()
+        answers = data_manager.read_answer()
+        id_ = data_manager.get_new_id(answers)
         # submission_time = data_manager.get_current_unix_timestamp()
         submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
         votes = 0
@@ -137,7 +139,8 @@ def submit_q_comment(num):
 @app.route('/comment', methods=['POST'])
 def comment_on_question():
     if request.method == 'POST':
-        id_ = data_manager.get_new_comment_id()
+        comments = data_manager.read_comments()
+        id_ = data_manager.get_new_id(comments)
         submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
         question_id = request.form['question_id']
         message = request.form['comment']

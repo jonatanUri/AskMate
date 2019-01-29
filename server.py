@@ -212,7 +212,8 @@ def edit_a_comment(num, answer_id_, comment_id_):
 
 @app.route('/all_users')
 def list_all_users():
-    return render_template('all_users.html')
+    user_data = data_manager.read_all_users()
+    return render_template('all_users.html', user_data=user_data)
 
 
 

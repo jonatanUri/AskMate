@@ -25,7 +25,7 @@ def read_latest_five_questions(cursor):
 @database_common.connection_handler
 def read_all_users(cursor):
     cursor.execute("""
-                    SELECT id, user_name, registration_time FROM user
+                    SELECT id, user_name, registration_time FROM "user"
                     """)
     user_data = cursor.fetchall()
     return user_data

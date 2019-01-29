@@ -3,12 +3,16 @@
 <link rel="stylesheet" href="/static/style.css">
     <head>
         <meta charset="UTF-8">
-        <title>All users</title>
-        <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>Users</h1></div>
+        <title>Users</title>
+        <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>USERS</h1></div>
     </head>
     <body>
         <table>
-
+            <tr>
+                <td>User ID</td>
+                <td>Username</td>
+                <td>Registration time</td>
+            </tr>
             {%  for user in user_data %}
                 <tr>
                     <td>{{ user.id }}</td>

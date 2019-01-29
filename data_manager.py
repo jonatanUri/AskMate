@@ -2,6 +2,7 @@ import time
 import os
 import database_common
 
+
 @database_common.connection_handler
 def read_all_questions(cursor):
     cursor.execute("""
@@ -108,8 +109,6 @@ def delete_all_comments_from_answer(cursor, id_):
                    {'id_': id_})
 
 
-
-
 @database_common.connection_handler
 def delete_answer(cursor, id_):
     cursor.execute("""
@@ -121,8 +120,8 @@ def delete_answer(cursor, id_):
 @database_common.connection_handler
 def add_question(cursor, new_question):
     cursor.execute("""
-                        INSERT INTO question(id, submission_time, view_number, vote_number, title, message, image) 
-                        VALUES (%(id)s,%(submission_time)s, %(view_number)s, %(vote_number)s,%(title)s,%(message)s,
+                        INSERT INTO question(id, user_id, submission_time, view_number, vote_number, title, message, image) 
+                        VALUES (%(id)s,%(user_id)s, %(submission_time)s, %(view_number)s, %(vote_number)s,%(title)s,%(message)s,
                         %(image)s);
                         """, new_question)
 
@@ -195,7 +194,6 @@ def get_this_answer_comment(cursor, comment_id_):
     return comment
 
 
-
 @database_common.connection_handler
 def read_a_comments(cursor, id_):
     cursor.execute("""
@@ -225,6 +223,7 @@ def delete_comment(cursor, question_id_, comment_id_):
     cursor.execute("""
                     DELETE FROM comment WHERE question_id=%(question_id_)s AND id= %(comment_id_)s
                     """, {'question_id_': question_id_, 'comment_id_': comment_id_})
+
 
 @database_common.connection_handler
 def delete_comment_for_answer(cursor, answer_id_, comment_id_):

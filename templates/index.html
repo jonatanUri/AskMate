@@ -4,7 +4,16 @@
 <head>
     <meta charset="utf-8">
     <title> Yeet </title>
-    <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>WELKOM!</h1></div>
+    <div class="header">
+        <a href="/"><img src="/static/images/home_button.png" class="home-button"></a>
+        <h1>WELKOM!</h1>
+        <h2>{{ name }}</h2>
+        <form action="/login" method="post">
+            <input type="text" name="username" id="username" placeholder="username">
+            <input type="password" name="password" id="password" placeholder="password">
+            <button type="submit">Login</button>
+        </form>
+    </div>
 </head>
 <body>
     <a href="/registration" class="register">registration</a> <br>

@@ -1,9 +1,13 @@
+from flask import Flask, render_template, redirect, request, session, escape
 import bcrypt
 
 from flask import Flask, render_template, redirect, request
 import data_manager
+import login_manager
 
 app = Flask(__name__)
+
+app.secret_key = b'verk49v,3,,32__'
 
 
 @app.route('/WORK-IN-PROGRESS')
@@ -13,8 +17,25 @@ def workinprogress():
 
 @app.route('/')
 def home_redirect():
+    if 'username' in session:
+        name = 'Logged in as %s' % escape(session['username'])
+    else:
+        name = 'You are not logged in'
+
     questions_dict=data_manager.read_latest_five_questions()
-    return render_template("index.html", questions_dict=questions_dict)
+
+    return render_template("index.html", questions_dict=questions_dict, name=name)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        pw = request.form['password']
+        username = request.form['username']
+        hash_pw = login_manager.read_hash(username)['user_password']
+        if login_manager.verify_password(pw, hash_pw):
+            session['username'] = username
+        return redirect('/')
 
 
 @app.route('/list')

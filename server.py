@@ -207,7 +207,5 @@ def edit_a_comment(num, answer_id_, comment_id_):
     return render_template('edit-answer-comment.html', comment_id_=comment_id_, answer_id_=answer_id_, num=num, comment=comment)
 
 
-
 if __name__ == "__main__":
     app.run()
-

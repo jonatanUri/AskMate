@@ -143,26 +143,23 @@ h4 {
     max-width: 0.8em;
 }
 
-.table_data {
-    font-size: 1.5em;
-    text-align: center;
-    border-style: solid;
-    border-width: 2px;
+table {
+    border-collapse: collapse;
+    width:40%;
+    margin-left:30%;
+    margin-right:30%;
 }
 
-.table_header {
+th {
     font-size: 1.8em;
     font-weight: bold;
     color: lightsalmon;
     padding: 5px 25px;
-    border-style: solid;
-    border-width: 3px;
     animation: flash linear 3s infinite;
-    margin: 100px;
 }
 
-.test {
-    border: 1px red solid;
-    padding: 50px;
-    margin: 50px;
+td {
+    font-size: 1.5em;
+    text-align: center;
+    border-top: 1px black solid;
 }

@@ -60,7 +60,8 @@ def submit_question():
     if request.method == 'POST':
         questions = data_manager.read_all_questions()
         id_ = data_manager.get_new_id(questions)
-        user_id = session['username']
+        user_name = session['username']
+        user_id = data_manager.get_user_id_from_username(user_name)
         submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
         title = request.form['title']
         message = request.form['message']

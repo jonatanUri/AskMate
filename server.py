@@ -223,7 +223,8 @@ def delete_answer_comment(num, answer_id, comment_id):
 @app.route('/answercomment', methods=['POST'])
 def comment_on_answer():
     if request.method == 'POST':
-        id_ = data_manager.get_new_comment_id()
+        comments = data_manager.read_comments()
+        id_ = data_manager.get_new_id(comments)
         submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
         question_id = request.form['question_id']
         answer_id = request.form['answer_id']

@@ -38,6 +38,12 @@ def login():
         return redirect('/')
 
 
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    session.pop('username', None)
+    return redirect('/')
+
+
 @app.route('/list')
 def mainpage():
     questions_dict = data_manager.read_all_questions()

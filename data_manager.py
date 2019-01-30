@@ -178,8 +178,10 @@ def get_current_unix_timestamp():
 
 @database_common.connection_handler
 def comment_on_question(cursor, new_comment):
-    cursor.execute("""INSERT INTO comment (id, question_id, answer_id, message, submission_time, edited_count)
-                        VALUES (%(id)s, %(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s, %(edited_count)s);""", new_comment)
+    cursor.execute("""INSERT INTO comment (id, user_id, question_id, answer_id, message, submission_time, edited_count)
+                      VALUES (%(id)s, %(user_id)s, %(question_id)s, %(answer_id)s, %(message)s,
+                      %(submission_time)s, %(edited_count)s);
+                         """, new_comment)
 
 
 @database_common.connection_handler
@@ -213,7 +215,9 @@ def get_this_answer_comment(cursor, comment_id_):
 @database_common.connection_handler
 def read_a_comments(cursor, id_):
     cursor.execute("""
-                        SELECT message, submission_time, id FROM comment  where answer_id=%(id_)s;
+                        SELECT message, submission_time, comment.id, "user".user_name FROM comment 
+                        JOIN "user" ON comment.user_id = "user".id
+                        where comment.answer_id=%(id_)s;
                         """, {'id_': id_})
     comments = cursor.fetchall()
     return comments
@@ -221,8 +225,8 @@ def read_a_comments(cursor, id_):
 
 @database_common.connection_handler
 def comment_on_answer_question(cursor, new_comment):
-    cursor.execute("""INSERT INTO comment (id, question_id, answer_id, message, submission_time, edited_count)
-                        VALUES (%(id)s, %(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s, %(edited_count)s);""", new_comment)
+    cursor.execute("""INSERT INTO comment (id, user_id, question_id, answer_id, message, submission_time, edited_count)
+                        VALUES (%(id)s, %(user_id)s, %(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s, %(edited_count)s);""", new_comment)
 
 
 @database_common.connection_handler

@@ -156,6 +156,7 @@ th {
     color: lightsalmon;
     padding: 5px 25px;
     animation: flash linear 3s infinite;
+    text-align: center;
 }
 
 td {

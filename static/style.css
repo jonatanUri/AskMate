@@ -171,11 +171,21 @@ td {
     padding: 5px 0px;
 }
 
+
+tr:hover {
+    background-color: #4d4d4d;
+}
+
+tr {
+    transition:0.15s;
+}
+
 .registration {
     font-size: 1.5em;
     font-weight: bold;
     color: #f0f8fc;
     font-family: 'Roboto Condensed', sans-serif;
+    padding-left: 5px;
 }
 
 input {
@@ -193,12 +203,44 @@ input {
     padding-left: 5px;
 }
 
+.login_box {
+    font-size: 1.2em;
+    padding: 0.6em 1.2em;
+    border:.2em solid white;
+    font-weight: bold;
+}
+
+.login_btn {
+    display: inline-block;
+    margin-top: 22px;
+    margin-right: 20px;
+    text-transform: uppercase;
+    background: lightsalmon;
+    color:white;
+    font-size: 1.2em;
+    padding: 0.6em 1.2em;
+    border:.2em solid white;
+    font-weight: bold;
+    position: relative;
+    transition:color 0.25s ease;
+    border-radius: 6px;
+    z-index: 1100;
+}
+
+.login_btn:hover {
+  color:salmon;
+}
+
+.login_btn:hover::after {
+  width: 100%;
+}
+
 .username {
     float: right;
     overflow: hidden;
     position: fixed;
-    right: 2.1em;
-    top: 2.1em;
+    right: 2.46em;
+    top: -0.25em;
     font-family: 'Roboto Condensed', sans-serif;
 }
 

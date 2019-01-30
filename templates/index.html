@@ -8,14 +8,19 @@
         <a href="/"><img src="/static/images/home_button.png" class="home-button"></a>
         <h1>WELKOM!</h1>
         <h2 class="username">{{ name }}</h2>
-        <form action="/login" method="post" class="login">
-            <input type="text" name="username" id="username" placeholder="username" class="login_box">
-            <input type="password" name="password" id="password" placeholder="password" class="login_box">
-            <button type="submit" class="login_btn">Login</button>
-        </form>
-        <form action="/logout" method="post">
-            <button type="submit">Logout</button>
-        </form>
+        <div class="login">
+            {% if name == "You are not logged in" %}
+            <form action="/login" method="post">
+                <input type="text" name="username" id="username" placeholder="username" class="login_box">
+                <input type="password" name="password" id="password" placeholder="password" class="login_box">
+                <button type="submit" class="login_btn">Login</button>
+            </form>
+            {% else %}
+            <form action="/logout" method="post">
+                <button type="submit" class="login_btn">Logout</button>
+            </form>
+            {% endif %}
+        </div>
     </div>
 </head>
 <body>

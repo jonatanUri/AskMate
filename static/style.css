@@ -112,6 +112,7 @@ a:hover {
     position: relative;
     transition:color 0.25s ease;
     border:.2em solid white;
+    border-radius: 6px;
 }
 
 .btn:hover {
@@ -146,28 +147,46 @@ h4 {
 
 table {
     border-collapse: collapse;
-    width:40%;
-    margin-left:30%;
-    margin-right:30%;
+    width: auto;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 th {
     font-size: 1.8em;
     font-weight: bold;
     color: lightsalmon;
-    padding: 5px 25px;
+    padding: 10px 25px;
     animation: flash linear 3s infinite;
     text-align: center;
+    font-family: 'Roboto Condensed', sans-serif;
 }
 
 td {
     font-size: 1.5em;
     text-align: center;
     border-top: 1px black solid;
+    padding: 5px 0px;
 }
 
 .registration {
     font-size: 1.5em;
     font-weight: bold;
+    color: #f0f8fc;
+    font-family: 'Roboto Condensed', sans-serif;
+}
 
+input {
+    background-color: #f0f8fc;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+::placeholder {
+    color: #ffac7d;
+}
+
+.register_box {
+    font-size: 1.2em;
+    padding-left: 5px;
 }

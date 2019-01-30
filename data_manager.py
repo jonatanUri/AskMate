@@ -35,7 +35,8 @@ def answer_by_question_id(cursor, id_):
 @database_common.connection_handler
 def read_a_question(cursor, id_):
     cursor.execute("""
-                    SELECT *, u.user_name FROM question 
+                    SELECT question.id, question.user_id, question.submission_time, question.view_number,
+                    question.vote_number, question.title, question.message, question.image, u.user_name FROM question 
                     JOIN "user" u on question.user_id = u.id
                     WHERE question.id=%(id_)s;
                     """, {'id_': id_})

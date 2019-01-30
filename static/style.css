@@ -167,8 +167,9 @@ th {
 td {
     font-size: 1.5em;
     text-align: center;
-    border-top: 1px black solid;
+    border-top: 1px #f0f8fc solid;
     padding: 5px 0px;
+    color: white;
 }
 
 
@@ -185,7 +186,7 @@ tr {
     font-weight: bold;
     color: #f0f8fc;
     font-family: 'Roboto Condensed', sans-serif;
-    padding-left: 5px;
+    padding-left: 0px;
 }
 
 input {
@@ -200,7 +201,10 @@ input {
 
 .register_box {
     font-size: 1.2em;
-    padding-left: 5px;
+    padding: 0.6em 1.2em;
+    border:.2em solid white;
+    font-weight: bold;
+    background-color: #f0f8fc;
 }
 
 .login_box {

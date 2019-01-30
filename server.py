@@ -1,3 +1,5 @@
+import bcrypt
+
 from flask import Flask, render_template, redirect, request
 import data_manager
 
@@ -18,8 +20,29 @@ def home_redirect():
 @app.route('/list')
 def mainpage():
     questions_dict = data_manager.read_all_questions()
-    questions_dict = data_manager.sorted_by_submission_time(questions_dict)
+    questions_dict = data_manager.sorted_by_submission_time(questions_dict) # We could refactor this into one
     return render_template("index.html", questions_dict=questions_dict)
+
+
+def hash_password(plain_text_password):
+    # By using bcrypt, the salt is saved into the hash itself
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
+
+
+@app.route('/registration', methods=['GET', 'POST'] )
+def registration():
+    if request.method == 'POST':
+        hashed_password = hash_password(request.form['candy'])
+        user_name = request.form['user_name']
+        reg_dict = {
+            'user_name': user_name,
+            'user_password': hashed_password
+        }
+        data_manager.registration(reg_dict)
+        return redirect('/')
+    elif request.method == 'GET':
+        return render_template('registration.html')
 
 
 @app.route('/question/<num>')
@@ -109,7 +132,7 @@ def delete_question(num):
 @app.route('/answer/<num>/delete-answer/<answer_id>')
 def delete_answer(num, answer_id):
     data_manager.delete_all_comments_from_answer(answer_id)
-    data_manager.delete_answer(answer_id)
+    data_manager.delete_answer(answer_id) # WE could refactor this by Join
     return redirect('/question/'+num)
 
 

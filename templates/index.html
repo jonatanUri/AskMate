@@ -18,6 +18,7 @@
 <body>
     <a href="/registration" class="register">registration</a> <br>
     <a href="/new-question" class="btn">ASK A QUESTION!</a>
+    <a href="/registration" class="register">registration</a>
     {% for i in questions_dict %}
     <p><a href="question/{{ i['id'] }}" class="question-title"><h3>{{ i['title'] }}</h3></a></p>
     <h4 class="question-message">{{i['message']}}</h4>

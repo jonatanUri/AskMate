@@ -34,7 +34,8 @@ def read_all_users(cursor):
 @database_common.connection_handler
 def answer_by_question_id(cursor, id_):
     cursor.execute("""
-                    SELECT *, "user".user_name FROM answer
+                    SELECT answer.question_id, answer.id, answer.message,answer.submission_time,
+                     answer.vote_number,"user".user_name FROM answer
                     JOIN "user" ON answer.user_id = "user".id
                     WHERE answer.question_id=%(id_)s;
                     """, {'id_': id_})
@@ -186,14 +187,17 @@ def get_current_unix_timestamp():
 
 @database_common.connection_handler
 def comment_on_question(cursor, new_comment):
-    cursor.execute("""INSERT INTO comment (id, question_id, answer_id, message, submission_time, edited_count)
-                        VALUES (%(id)s, %(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s, %(edited_count)s);""", new_comment)
+    cursor.execute("""INSERT INTO comment (id, user_id, question_id, answer_id, message, submission_time, edited_count)
+                        VALUES (%(id)s,%(user_id)s, %(question_id)s, %(answer_id)s, %(message)s,
+                         %(submission_time)s, %(edited_count)s);""", new_comment)
 
 
 @database_common.connection_handler
 def read_q_comments(cursor, id_):
     cursor.execute("""
-                        SELECT message, submission_time,id FROM comment  where question_id=%(id_)s;
+                        SELECT message, submission_time,comment.id, "user".user_name FROM comment
+                        JOIN "user" ON comment.user_id = "user".id
+                        where comment.question_id=%(id_)s;
                         """, {'id_': id_})
     comments = cursor.fetchall()
     return comments
@@ -221,7 +225,9 @@ def get_this_answer_comment(cursor, comment_id_):
 @database_common.connection_handler
 def read_a_comments(cursor, id_):
     cursor.execute("""
-                        SELECT message, submission_time, id FROM comment  where answer_id=%(id_)s;
+                        SELECT message, submission_time, comment.id, "user".user_name FROM comment
+                        JOIN "user" ON comment.user_id = "user".id
+                         where comment.answer_id=%(id_)s;
                         """, {'id_': id_})
     comments = cursor.fetchall()
     return comments
@@ -229,8 +235,9 @@ def read_a_comments(cursor, id_):
 
 @database_common.connection_handler
 def comment_on_answer_question(cursor, new_comment):
-    cursor.execute("""INSERT INTO comment (id, question_id, answer_id, message, submission_time, edited_count)
-                        VALUES (%(id)s, %(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s, %(edited_count)s);""", new_comment)
+    cursor.execute("""INSERT INTO comment (id, user_id, question_id, answer_id, message, submission_time, edited_count)
+                        VALUES (%(id)s, %(user_id)s, %(question_id)s, %(answer_id)s, %(message)s, %(submission_time)s,
+                        %(edited_count)s);""", new_comment)
 
 
 @database_common.connection_handler

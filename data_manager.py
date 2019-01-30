@@ -34,7 +34,9 @@ def read_all_users(cursor):
 @database_common.connection_handler
 def answer_by_question_id(cursor, id_):
     cursor.execute("""
-                    SELECT * FROM answer WHERE question_id=%(id_)s;
+                    SELECT *, "user".user_name FROM answer
+                    JOIN "user" ON answer.user_id = "user".id
+                    WHERE answer.question_id=%(id_)s;
                     """, {'id_': id_})
     answers = cursor.fetchall()
     return answers
@@ -43,7 +45,8 @@ def answer_by_question_id(cursor, id_):
 @database_common.connection_handler
 def read_a_question(cursor, id_):
     cursor.execute("""
-                    SELECT *, u.user_name FROM question 
+                    SELECT question.id, question.user_id, question.submission_time, question.view_number,
+                    question.vote_number, question.title, question.message, question.image, u.user_name FROM question 
                     JOIN "user" u on question.user_id = u.id
                     WHERE question.id=%(id_)s;
                     """, {'id_': id_})
@@ -71,10 +74,10 @@ def read_comments(cursor):
 @database_common.connection_handler
 def get_user_id_from_username(cursor, username):
     cursor.execute("""
-                    SELECT id FROM user
+                    SELECT id FROM "user"
                     WHERE user_name = %(username)s;
                     """, {'username': username})
-    id_ = cursor.fetchall()
+    id_ = cursor.fetchone()
     return id_
 
 
@@ -149,8 +152,9 @@ def add_question(cursor, new_question):
 @database_common.connection_handler
 def add_answer(cursor, new_answer):
     cursor.execute("""
-                            INSERT INTO answer(id, submission_time, vote_number,question_id, message, image) 
-                            VALUES (%(id)s,%(submission_time)s, %(vote_number)s, %(question_id)s,%(message)s,
+                            INSERT INTO answer(id, user_id, submission_time, vote_number,question_id, message, image) 
+                            VALUES (%(id)s,%(user_id)s, %(submission_time)s,
+                            %(vote_number)s, %(question_id)s,%(message)s,
                             %(image)s);
                             """, new_answer)
 

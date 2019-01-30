@@ -109,12 +109,13 @@ def submit_question():
         questions = data_manager.read_all_questions()
         id_ = data_manager.get_new_id(questions)
         user_name = session['username']
-        user_id = data_manager.get_user_id_from_username(user_name)
+        user_id = data_manager.get_user_id_from_username(user_name)['id']
         submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
         title = request.form['title']
         message = request.form['message']
         views = 0
         votes = 0
+        print(user_id)
         question_dict = {
             'id': id_,
             'user_id': user_id,
@@ -132,15 +133,17 @@ def submit_question():
 @app.route('/submit-answer', methods=['GET', 'POST'])
 def submit_answer():
     if request.method == 'POST':
+        user_name= session['username']
+        user_id = data_manager.get_user_id_from_username(user_name)['id']
         answers = data_manager.read_answer()
         id_ = data_manager.get_new_id(answers)
-        # submission_time = data_manager.get_current_unix_timestamp()
         submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
         votes = 0
         question_id = request.form['question_id']
         message = request.form['message']
         answer_dict = {
             'id': id_,
+            'user_id': user_id,
             'submission_time': submission_time,
             'vote_number': votes,
             'question_id': question_id,
@@ -222,7 +225,8 @@ def delete_answer_comment(num, answer_id, comment_id):
 @app.route('/answercomment', methods=['POST'])
 def comment_on_answer():
     if request.method == 'POST':
-        id_ = data_manager.get_new_comment_id()
+        comments = data_manager.read_comments()
+        id_ = data_manager.get_new_id(comments)
         submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
         question_id = request.form['question_id']
         answer_id = request.form['answer_id']

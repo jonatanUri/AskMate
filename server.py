@@ -72,10 +72,11 @@ def registration():
 
 @app.route('/question/<num>')
 def question(num):
+    user_name = session['username']
     questions = data_manager.read_a_question(num)
     answers_list = data_manager.answer_by_question_id(num)
 
-    return render_template("question.html", num=num, questions=questions, answers_list=answers_list)
+    return render_template("question.html", num=num, questions=questions, answers_list=answers_list, u_name=user_name)
 
 
 # Need to implement vote up ---> Help implement this function please
@@ -186,8 +187,9 @@ def route_edit_answer(num, answer_id):
 
 @app.route('/question/<num>/q-comment')
 def submit_q_comment(num):
+    user_name = session['username']
     comments = data_manager.read_q_comments(num)
-    return render_template('q-comment.html', num=num, comments=comments)
+    return render_template('q-comment.html', num=num, comments=comments, u_name=user_name)
 
 
 @app.route('/comment', methods=['POST'])
@@ -215,8 +217,9 @@ def comment_on_question():
 
 @app.route('/question/<num>/a-comment/<answer_id>')
 def answer_comments(num, answer_id):
+    user_name = session['username']
     comments = data_manager.read_a_comments(answer_id)
-    return render_template('a-comment.html', num=num, answer_id=answer_id, comments=comments)
+    return render_template('a-comment.html', num=num, answer_id=answer_id, comments=comments, u_name=user_name)
 
 
 @app.route('/question/<num>/a-comment/<answer_id>/delete-comment/<comment_id>')

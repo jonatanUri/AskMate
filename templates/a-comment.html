@@ -23,8 +23,10 @@
             <h4>
                 {{ comment.message }}
                 {{ comment.submission_time }}
-                <a href="/question/{{ num }}/a-comment/{{ answer_id }}/edit-comment/{{ comment.id }}">Edit</a>
-                <a href="/question/{{ num }}/a-comment/{{ answer_id }}/delete-comment/{{ comment.id }}"><img src="/static/images/trash.png" class="icon"> Delete </a><a href="/question/{{ num }}/a-comment/{{ answer_id }}/edit-comment/{{ comment.id }}"><img src="/static/images/pencil.png" class="icon"> Edit </a> By: {{ comment.user_name }}
+                {% if u_name == comment.user_name%}
+                    <a href="/question/{{ num }}/a-comment/{{ answer_id }}/delete-comment/{{ comment.id }}"><img src="/static/images/trash.png" class="icon"> Delete </a><a href="/question/{{ num }}/a-comment/{{ answer_id }}/edit-comment/{{ comment.id }}"><img src="/static/images/pencil.png" class="icon"> Edit </a>
+                {% endif %}
+                By: {{ comment.user_name }}
             </h4>
         {% endfor %}
     </div>

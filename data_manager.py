@@ -26,7 +26,9 @@ def read_latest_five_questions(cursor):
 @database_common.connection_handler
 def answer_by_question_id(cursor, id_):
     cursor.execute("""
-                    SELECT * FROM answer WHERE question_id=%(id_)s;
+                    SELECT *, "user".user_name FROM answer
+                    JOIN "user" ON answer.user_id = "user".id
+                    WHERE answer.question_id=%(id_)s;
                     """, {'id_': id_})
     answers = cursor.fetchall()
     return answers
@@ -142,8 +144,9 @@ def add_question(cursor, new_question):
 @database_common.connection_handler
 def add_answer(cursor, new_answer):
     cursor.execute("""
-                            INSERT INTO answer(id, submission_time, vote_number,question_id, message, image) 
-                            VALUES (%(id)s,%(submission_time)s, %(vote_number)s, %(question_id)s,%(message)s,
+                            INSERT INTO answer(id, user_id, submission_time, vote_number,question_id, message, image) 
+                            VALUES (%(id)s,%(user_id)s, %(submission_time)s,
+                            %(vote_number)s, %(question_id)s,%(message)s,
                             %(image)s);
                             """, new_answer)
 

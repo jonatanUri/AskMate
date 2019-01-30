@@ -193,6 +193,8 @@ def submit_q_comment(num):
 @app.route('/comment', methods=['POST'])
 def comment_on_question():
     if request.method == 'POST':
+        user_name = session['username']
+        user_id = data_manager.get_user_id_from_username(user_name)['id']
         comments = data_manager.read_comments()
         id_ = data_manager.get_new_id(comments)
         submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
@@ -200,6 +202,7 @@ def comment_on_question():
         message = request.form['comment']
         comment_dict = {
             'id': id_,
+            'user_id': user_id,
             'question_id': question_id,
             'answer_id': None,
             'message': message,
@@ -225,13 +228,17 @@ def delete_answer_comment(num, answer_id, comment_id):
 @app.route('/answercomment', methods=['POST'])
 def comment_on_answer():
     if request.method == 'POST':
-        id_ = data_manager.get_new_comment_id()
+        user_name = session['username']
+        user_id = data_manager.get_user_id_from_username(user_name)['id']
+        comments = data_manager.read_comments()
+        id_ = data_manager.get_new_id(comments)
         submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
         question_id = request.form['question_id']
         answer_id = request.form['answer_id']
         message = request.form['comment']
         answer_comment_dict = {
             'id': id_,
+            'user_id': user_id,
             'question_id': None,
             'answer_id': answer_id,
             'message': message,

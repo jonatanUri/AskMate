@@ -104,6 +104,8 @@ def submit_question():
     if request.method == 'POST':
         questions = data_manager.read_all_questions()
         id_ = data_manager.get_new_id(questions)
+        user_name = session['username']
+        user_id = data_manager.get_user_id_from_username(user_name)
         submission_time = data_manager.convert_time(data_manager.get_current_unix_timestamp())
         title = request.form['title']
         message = request.form['message']
@@ -111,6 +113,7 @@ def submit_question():
         votes = 0
         question_dict = {
             'id': id_,
+            'user_id': user_id,
             'submission_time': submission_time,
             'view_number': views,
             'vote_number': votes,

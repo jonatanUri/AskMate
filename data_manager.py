@@ -26,7 +26,7 @@ def read_latest_five_questions(cursor):
 @database_common.connection_handler
 def answer_by_question_id(cursor, id_):
     cursor.execute("""
-                    SELECT * FROM answer  where question_id=%(id_)s;
+                    SELECT * FROM answer WHERE question_id=%(id_)s;
                     """, {'id_': id_})
     answers = cursor.fetchall()
     return answers
@@ -35,7 +35,9 @@ def answer_by_question_id(cursor, id_):
 @database_common.connection_handler
 def read_a_question(cursor, id_):
     cursor.execute("""
-                    SELECT * FROM question where id=%(id_)s;
+                    SELECT *, u.user_name FROM question 
+                    JOIN "user" u on question.user_id = u.id
+                    WHERE question.id=%(id_)s;
                     """, {'id_': id_})
     questions = cursor.fetchall()
     return questions
@@ -56,6 +58,16 @@ def read_comments(cursor):
                     SELECT * FROM comment;""")
     comments = cursor.fetchall()
     return comments
+
+
+@database_common.connection_handler
+def get_user_id_from_username(cursor, username):
+    cursor.execute("""
+                    SELECT id FROM user
+                    WHERE user_name = %(username)s;
+                    """, {'username': username})
+    id_ = cursor.fetchall()
+    return id_
 
 
 def convert_dict_to_human_readable(list_of_dicts):
@@ -109,8 +121,6 @@ def delete_all_comments_from_answer(cursor, id_):
                    {'id_': id_})
 
 
-
-
 @database_common.connection_handler
 def delete_answer(cursor, id_):
     cursor.execute("""
@@ -122,8 +132,8 @@ def delete_answer(cursor, id_):
 @database_common.connection_handler
 def add_question(cursor, new_question):
     cursor.execute("""
-                        INSERT INTO question(id, submission_time, view_number, vote_number, title, message, image) 
-                        VALUES (%(id)s,%(submission_time)s, %(view_number)s, %(vote_number)s,%(title)s,%(message)s,
+                        INSERT INTO question(id, user_id, submission_time, view_number, vote_number, title, message, image) 
+                        VALUES (%(id)s,%(user_id)s, %(submission_time)s, %(view_number)s, %(vote_number)s,%(title)s,%(message)s,
                         %(image)s);
                         """, new_question)
 

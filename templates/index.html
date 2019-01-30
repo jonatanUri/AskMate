@@ -4,12 +4,22 @@
 <head>
     <meta charset="utf-8">
     <title> Yeet </title>
-    <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>WELKOM!</h1></div>
+    <div class="header">
+        <a href="/"><img src="/static/images/home_button.png" class="home-button"></a>
+        <h1>WELKOM!</h1>
+        <h2>{{ name }}</h2>
+        <form action="/login" method="post">
+            <input type="text" name="username" id="username" placeholder="username">
+            <input type="password" name="password" id="password" placeholder="password">
+            <button type="submit">Login</button>
+        </form>
+    </div>
 </head>
 <body>
     <a href="/all_users" class="btn">list all users</a>
     <a href="/registration" class="register">registration</a> <br>
     <a href="/new-question" class="btn">ASK A QUESTION!</a>
+    <a href="/registration" class="register">registration</a>
     {% for i in questions_dict %}
     <p><a href="question/{{ i['id'] }}" class="question-title"><h3>{{ i['title'] }}</h3></a></p>
     <h4 class="question-message">{{i['message']}}</h4>

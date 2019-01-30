@@ -1,7 +1,5 @@
-from flask import Flask, render_template, redirect, request, session, escape
 import bcrypt
-
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, session, escape
 import data_manager
 import login_manager
 

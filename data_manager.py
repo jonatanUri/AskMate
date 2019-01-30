@@ -2,6 +2,7 @@ import time
 import os
 import database_common
 
+
 @database_common.connection_handler
 def read_all_questions(cursor):
     cursor.execute("""
@@ -33,7 +34,9 @@ def read_all_users(cursor):
 @database_common.connection_handler
 def answer_by_question_id(cursor, id_):
     cursor.execute("""
-                    SELECT * FROM answer  where question_id=%(id_)s;
+                    SELECT *, "user".user_name FROM answer
+                    JOIN "user" ON answer.user_id = "user".id
+                    WHERE answer.question_id=%(id_)s;
                     """, {'id_': id_})
     answers = cursor.fetchall()
     return answers
@@ -42,7 +45,10 @@ def answer_by_question_id(cursor, id_):
 @database_common.connection_handler
 def read_a_question(cursor, id_):
     cursor.execute("""
-                    SELECT * FROM question where id=%(id_)s;
+                    SELECT question.id, question.user_id, question.submission_time, question.view_number,
+                    question.vote_number, question.title, question.message, question.image, u.user_name FROM question 
+                    JOIN "user" u on question.user_id = u.id
+                    WHERE question.id=%(id_)s;
                     """, {'id_': id_})
     questions = cursor.fetchall()
     return questions
@@ -63,6 +69,16 @@ def read_comments(cursor):
                     SELECT * FROM comment;""")
     comments = cursor.fetchall()
     return comments
+
+
+@database_common.connection_handler
+def get_user_id_from_username(cursor, username):
+    cursor.execute("""
+                    SELECT id FROM "user"
+                    WHERE user_name = %(username)s;
+                    """, {'username': username})
+    id_ = cursor.fetchone()
+    return id_
 
 
 def convert_dict_to_human_readable(list_of_dicts):
@@ -116,8 +132,6 @@ def delete_all_comments_from_answer(cursor, id_):
                    {'id_': id_})
 
 
-
-
 @database_common.connection_handler
 def delete_answer(cursor, id_):
     cursor.execute("""
@@ -129,8 +143,8 @@ def delete_answer(cursor, id_):
 @database_common.connection_handler
 def add_question(cursor, new_question):
     cursor.execute("""
-                        INSERT INTO question(id, submission_time, view_number, vote_number, title, message, image) 
-                        VALUES (%(id)s,%(submission_time)s, %(view_number)s, %(vote_number)s,%(title)s,%(message)s,
+                        INSERT INTO question(id, user_id, submission_time, view_number, vote_number, title, message, image) 
+                        VALUES (%(id)s,%(user_id)s, %(submission_time)s, %(view_number)s, %(vote_number)s,%(title)s,%(message)s,
                         %(image)s);
                         """, new_question)
 
@@ -138,8 +152,9 @@ def add_question(cursor, new_question):
 @database_common.connection_handler
 def add_answer(cursor, new_answer):
     cursor.execute("""
-                            INSERT INTO answer(id, submission_time, vote_number,question_id, message, image) 
-                            VALUES (%(id)s,%(submission_time)s, %(vote_number)s, %(question_id)s,%(message)s,
+                            INSERT INTO answer(id, user_id, submission_time, vote_number,question_id, message, image) 
+                            VALUES (%(id)s,%(user_id)s, %(submission_time)s,
+                            %(vote_number)s, %(question_id)s,%(message)s,
                             %(image)s);
                             """, new_answer)
 
@@ -203,7 +218,6 @@ def get_this_answer_comment(cursor, comment_id_):
     return comment
 
 
-
 @database_common.connection_handler
 def read_a_comments(cursor, id_):
     cursor.execute("""
@@ -233,6 +247,7 @@ def delete_comment(cursor, question_id_, comment_id_):
     cursor.execute("""
                     DELETE FROM comment WHERE question_id=%(question_id_)s AND id= %(comment_id_)s
                     """, {'question_id_': question_id_, 'comment_id_': comment_id_})
+
 
 @database_common.connection_handler
 def delete_comment_for_answer(cursor, answer_id_, comment_id_):

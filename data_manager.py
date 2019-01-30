@@ -63,10 +63,10 @@ def read_comments(cursor):
 @database_common.connection_handler
 def get_user_id_from_username(cursor, username):
     cursor.execute("""
-                    SELECT id FROM user
+                    SELECT id FROM "user"
                     WHERE user_name = %(username)s;
                     """, {'username': username})
-    id_ = cursor.fetchall()
+    id_ = cursor.fetchone()
     return id_
 
 

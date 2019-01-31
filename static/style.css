@@ -78,11 +78,34 @@ h1 {
 
 }
 
+h6 {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 1em;
+}
+
+.answer-message {
+    margin-bottom: 0;
+}
+
+.comment-data {
+    margin-top: 3px;
+    margin-bottom: 30px;
+    padding-bottom: 3px;
+
+}
+
 a {
     text-decoration: none;
     color: #f0f8fc;
     font-family: 'Roboto Condensed', sans-serif;
     transition: 0.2s;
+}
+
+.page-title {
+    font-size: 1.5em;
+    text-decoration: none;
+    color: #f0f8fc;
+    font-family: 'Roboto Condensed', sans-serif;
 }
 
 a:visited {
@@ -205,6 +228,18 @@ input {
     border:.2em solid white;
     font-weight: bold;
     background-color: #f0f8fc;
+}
+
+.big_register_box {
+    font-size: 1.2em;
+    padding: 0.6em 1.2em;
+    border:.2em solid white;
+    border-radius: 6px;
+    font-weight: bold;
+    background-color: #f0f8fc;
+    height: 5em;
+    width: 17.5em;
+    resize: none;
 }
 
 .login_box {

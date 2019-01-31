@@ -7,16 +7,15 @@
         <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>WELKOM!</h1></div>
     </head>
     <body>
-        <h1>Fill the form</h1>
         <form method="POST" action="/submit-answer">
-            <h3>
+            <h2 class="page-title">
                 Message:
-                <br>
-                <textarea name="message" id="message" rows="6" cols="40" minlength="10"></textarea>
+            </h2>
+                <br> <br>
+                <textarea name="message" id="message" rows="6" cols="40" minlength="10" class="big_register_box"></textarea>
                 <input type="hidden" value="{{num}}" name="question_id" id="question_id" />
                 <br>
-                <input type="submit" value="Submit">
-            </h3>
+                <input type="submit" value="Submit" class="login_btn">
         </form>
     </body>
 </html>

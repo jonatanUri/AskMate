@@ -7,13 +7,13 @@
         <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>Comments</h1></div>
     </head>
     <body>
-        <h1><a href="/question/{{ num }}">Back</a> </h1>
+        <a href="/question/{{ num }}" class="btn">Back</a>
         <div class="comment">
             <form action="/answercomment" method="post">
                 <p>
                     {% if u_name != None %}
-                        <label for="comment">Comment:</label><br>
-                        <input type="text" name="comment" id="comment">
+                        <h2 class="page-title">Comment:</h2><br>
+                        <input type="text" name="comment" id="comment" class="register_box">
                         <input type="hidden" value="{{ num }}" name="question_id" id="question_id"><br>
                         <input type="hidden" value="{{ answer_id }}" name="answer_id", id="answer_id"><br>
                         <br>

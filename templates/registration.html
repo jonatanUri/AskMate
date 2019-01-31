@@ -8,15 +8,11 @@
     </head>
     <body>
         <form action="/registration" method="post">
-            <h3 for="user_name" class="registration">User Name (Min. 5 char) </h3>
+            <h3 for="user_name" class="registration">User Name </h3>
             <input id="user_name" type="text" name="user_name" placeholder="username" class="register_box"><br>
             <h3 for="psswrd" class="registration">Password (Min. 5 char)</h3>
-            <input id="psswrd" type="password" name="candy" minlength="5" placeholder="password" class="register_box"><br>
+            <input id="psswrd" type="text" name="candy" minlength="5" placeholder="password" class="register_box"><br>
             <input type="submit" value="Register" class="login_btn">
         </form>
     </body>
 </html>
-
-{% if warning is defined %}
-<script>alert('Invalid registration')</script>
-{% endif %}

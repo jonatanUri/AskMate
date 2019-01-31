@@ -55,11 +55,25 @@ def hash_password(plain_text_password):
     return hashed_bytes.decode('utf-8')
 
 
+def validate_password(user_name, password):
+    if len(user_name) <= 5 or len(password) <= 5 or " " in user_name:
+        user = data_manager.get_registered_users(user_name)
+        if user == user_name:
+            return True
+        return False
+    return True
+
+
 @app.route('/registration', methods=['GET', 'POST'] )
 def registration():
     if request.method == 'POST':
-        hashed_password = hash_password(request.form['candy'])
+        raw_pass = request.form['candy']
         user_name = request.form['user_name']
+        registration_is_valid = validate_password(user_name, raw_pass)
+        if not registration_is_valid:
+            warning = True
+            return render_template('registration.html', warning=warning)
+        hashed_password = hash_password(raw_pass)
         reg_dict = {
             'user_name': user_name,
             'user_password': hashed_password

@@ -74,7 +74,7 @@ CREATE TABLE tag (
 DROP TABLE IF EXISTS public.user;
 CREATE TABLE "user"(
     id serial NOT NULL,
-    user_name VARCHAR(255) NOT NULL ,
+    user_name VARCHAR(255) NOT NULL UNIQUE ,
     user_password VARCHAR(255) NOT NULL ,
     registration_time timestamp without time zone
 );

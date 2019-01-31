@@ -288,6 +288,19 @@ def delete_question(cursor, id_):
 
 @database_common.connection_handler
 def registration(cursor, reg_info):
-    cursor.execute("""INSERT INTO "user" (user_name, user_password,registration_time)
-                   VALUES (%(user_name)s, %(user_password)s, CURRENT_TIMESTAMP)
+    cursor.execute("""
+                  INSERT INTO "user" (user_name, user_password,registration_time)
+                   VALUES (%(user_name)s, %(user_password)s, CURRENT_TIMESTAMP) ON CONFLICT DO NOTHING ;
                    """, reg_info)
+
+
+@database_common.connection_handler
+def get_registered_users(cursor, name):
+    cursor.execute("""
+                      SELECT user_name FROM "user"
+                      WHERE user_name=%(name)s;
+                       """, {'name': name})
+    users = cursor.fetchall()
+    return users
+
+

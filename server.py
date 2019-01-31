@@ -288,5 +288,11 @@ def edit_a_comment(num, answer_id_, comment_id_):
     return render_template('edit-answer-comment.html', comment_id_=comment_id_, answer_id_=answer_id_, num=num, comment=comment)
 
 
+@app.route('/all_users')
+def list_all_users():
+    user_data = data_manager.read_all_users()
+    return render_template('all_users.html', user_data=user_data)
+
+
 if __name__ == "__main__":
     app.run()

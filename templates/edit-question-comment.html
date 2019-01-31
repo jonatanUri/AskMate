@@ -1,27 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit Question Comment</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>Edit comment</h1></div>
-</head>
-<body>
-<h2><a href="/question/{{ num }}"><img src="/static/images/back-arrow.png" class="icon">Back</a> </h2>
-{% block content %}
-<form method="POST" action="/question/{{num}}/q-comment/edit-comment/{{comment_id}}">
-<h3>
-    <h4>Message:</h4>
-    <br>
-     {% for message in comment %}
-        <textarea name="message" id="message" rows="6" cols="40" minlength="10">{{ message.message}}</textarea>
-    {% endfor %}
-
-    <input type="hidden" value="{{num}}" name="question_id" id="question_id" />
-    <br>
-    <input type="submit" value="Submit" class="btn">
-</h3>
-</form>
-{% endblock %}
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Edit Question Comment</title>
+        <link rel="stylesheet" href="/static/style.css">
+        <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>Edit comment</h1></div>
+    </head>
+    <body>
+        <h2><a href="/question/{{ num }}"><img src="/static/images/back-arrow.png" class="icon">Back</a> </h2>
+        {% block content %}
+        <form method="POST" action="/question/{{num}}/q-comment/edit-comment/{{comment_id}}">
+            <h3>
+                <h4>Message:</h4>
+                <br>
+                 {% for message in comment %}
+                    <textarea name="message" id="message" rows="6" cols="40" minlength="10">{{ message.message}}</textarea>
+                 {% endfor %}
+                <input type="hidden" value="{{num}}" name="question_id" id="question_id" />
+                <br>
+                <input type="submit" value="Submit" class="btn">
+            </h3>
+        </form>
+        {% endblock %}
+    </body>
 </html>

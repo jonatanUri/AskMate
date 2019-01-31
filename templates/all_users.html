@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link rel="stylesheet" href="/static/style.css">
+        <head>
+            <meta charset="UTF-8">
+            <title>Users</title>
+            <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>USERS</h1></div>
+        </head>
+        <body>
+            <table>
+                <tr>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Registration time</th>
+                </tr>
+                {%  for user in user_data %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.user_name }}</td>
+                    <td>{{ user.registration_time }}</td>
+                </tr>
+                {%  endfor %}
+            </table>
+        </body>
+</html>

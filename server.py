@@ -86,7 +86,10 @@ def registration():
 
 @app.route('/question/<num>')
 def question(num):
-    user_name = session['username']
+    if 'username' in session:
+        user_name = session['username']
+    else:
+        user_name = None
     questions = data_manager.read_a_question(num)
     answers_list = data_manager.answer_by_question_id(num)
 
@@ -201,7 +204,10 @@ def route_edit_answer(num, answer_id):
 
 @app.route('/question/<num>/q-comment')
 def submit_q_comment(num):
-    user_name = session['username']
+    if 'username' in session:
+        user_name = session['username']
+    else:
+        user_name = None
     comments = data_manager.read_q_comments(num)
     return render_template('q-comment.html', num=num, comments=comments, u_name=user_name)
 
@@ -209,7 +215,10 @@ def submit_q_comment(num):
 @app.route('/comment', methods=['POST'])
 def comment_on_question():
     if request.method == 'POST':
-        user_name = session['username']
+        if 'username' in session:
+            user_name = session['username']
+        else:
+            user_name = None
         user_id = data_manager.get_user_id_from_username(user_name)['id']
         comments = data_manager.read_comments()
         id_ = data_manager.get_new_id(comments)
@@ -231,7 +240,10 @@ def comment_on_question():
 
 @app.route('/question/<num>/a-comment/<answer_id>')
 def answer_comments(num, answer_id):
-    user_name = session['username']
+    if 'username' in session:
+        user_name = session['username']
+    else:
+        user_name = None
     comments = data_manager.read_a_comments(answer_id)
     return render_template('a-comment.html', num=num, answer_id=answer_id, comments=comments, u_name=user_name)
 

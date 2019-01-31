@@ -11,12 +11,14 @@
         <div class="comment">
             <form action="/answercomment" method="post">
                 <p>
-                    <label for="comment">Comment:</label><br>
-                    <input type="text" name="comment" id="comment">
-                    <input type="hidden" value="{{ num }}" name="question_id" id="question_id"><br>
-                    <input type="hidden" value="{{ answer_id }}" name="answer_id", id="answer_id"><br>
-                    <br>
-                    <button type="submit" class="btn">Submit</button>
+                    {% if u_name != None %}
+                        <label for="comment">Comment:</label><br>
+                        <input type="text" name="comment" id="comment">
+                        <input type="hidden" value="{{ num }}" name="question_id" id="question_id"><br>
+                        <input type="hidden" value="{{ answer_id }}" name="answer_id", id="answer_id"><br>
+                        <br>
+                        <button type="submit" class="btn">Submit</button>
+                    {% endif %}
                 </p>
             </form>
             {% for comment in comments %}

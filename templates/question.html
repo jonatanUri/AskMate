@@ -19,8 +19,10 @@
         </h6>
         <br>
         <h4>
-            <a href="/">                                        <img src="/static/images/back-arrow.png" class="icon">  Back</a>
-            <a href="/question/{{question.id}}/new-answer">     <img src="/static/images/pencil.png" class="icon">      Answer</a>
+            <a href="/">                                            <img src="/static/images/back-arrow.png" class="icon">  Back</a>
+            {% if u_name != None %}
+                <a href="/question/{{question.id}}/new-answer">     <img src="/static/images/pencil.png" class="icon">      Answer </a>
+            {% endif %}
             {% if u_name == question.user_name %}
                 <a href="/delete-question/{{question.id}}">         <img src="/static/images/trash.png" class="icon">       Delete this question</a>
             {% endif %}

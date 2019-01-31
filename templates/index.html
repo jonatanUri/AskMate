@@ -1,37 +1,37 @@
 <!doctype html>
 <html>
-<link rel="stylesheet" href="/static/style.css">
-<head>
-    <meta charset="utf-8">
-    <title> Yeet </title>
-    <div class="header">
-        <a href="/"><img src="/static/images/home_button.png" class="home-button"></a>
-        <h1>WELKOM!</h1>
-        <h2 class="username">{{ name }}</h2>
-        <div class="login">
-            {% if name == "You are not logged in" %}
-            <form action="/login" method="post">
-                <input type="text" name="username" id="username" placeholder="username" class="login_box">
-                <input type="password" name="password" id="password" placeholder="password" class="login_box">
-                <button type="submit" class="login_btn">Login</button>
-            </form>
-            {% else %}
-            <form action="/logout" method="post">
-                <button type="submit" class="login_btn">Logout</button>
-            </form>
-            {% endif %}
+    <link rel="stylesheet" href="/static/style.css">
+    <head>
+        <meta charset="utf-8">
+        <title> Yeet </title>
+        <div class="header">
+            <a href="/"><img src="/static/images/home_button.png" class="home-button"></a>
+            <h1>WELKOM!</h1>
+            <h2 class="username">{{ name }}</h2>
+            <div class="login">
+                {% if name == "You are not logged in" %}
+                <form action="/login" method="post">
+                    <input type="text" name="username" id="username" placeholder="username" class="login_box">
+                    <input type="password" name="password" id="password" placeholder="password" class="login_box">
+                    <button type="submit" class="login_btn">Login</button>
+                </form>
+                {% else %}
+                <form action="/logout" method="post">
+                    <button type="submit" class="login_btn">Logout</button>
+                </form>
+                {% endif %}
+            </div>
         </div>
-    </div>
-</head>
-<body>
-    <a href="/all_users" class="btn">list all users</a>
-    <a href="/registration" class="btn">registration</a>
-    <a href="/new-question" class="btn">ASK A QUESTION!</a>
-    {% for i in questions_dict %}
-    <p><a href="question/{{ i['id'] }}" class="question-title"><h3>{{ i['title'] }}</h3></a></p>
-    <h4 class="question-message">{{i['message']}}</h4>
-    {% endfor %}
-    <h3><a href="{{ url_for('home_redirect') }}">Less</a></h3>
-    <h3><a href="{{ url_for('mainpage') }}">More</a> </h3>
-</body>
+    </head>
+    <body>
+        <a href="/all_users" class="btn">list all users</a>
+        <a href="/registration" class="btn">registration</a>
+        <a href="/new-question" class="btn">ASK A QUESTION!</a>
+        {% for i in questions_dict %}
+        <p><a href="question/{{ i['id'] }}" class="question-title"><h3>{{ i['title'] }}</h3></a></p>
+        <h4 class="question-message">{{i['message']}}</h4>
+        {% endfor %}
+        <h3><a href="{{ url_for('home_redirect') }}">Less</a></h3>
+        <h3><a href="{{ url_for('mainpage') }}">More</a> </h3>
+    </body>
 </html>

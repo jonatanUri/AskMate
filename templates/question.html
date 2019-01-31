@@ -1,14 +1,15 @@
 <!doctype html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <title>{{questions.title}} </title>
-    <link rel="stylesheet" href="/static/style.css">
-    {% block content %}
-    {% for question in questions %}
-    <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>{{question.title}}</h1></div>
-</head>
-<body><br>
+    <head>
+        <meta charset="utf-8">
+        <title>{{questions.title}} </title>
+        <link rel="stylesheet" href="/static/style.css">
+        {% block content %}
+        {% for question in questions %}
+        <div class="header"> <a href="/"><img src="/static/images/home_button.png" class="home-button"></a><h1>{{question.title}}</h1></div>
+    </head>
+    <body>
+        <br>
         <h4 class="question-message">{{question.message}}</h4><br>
         <h6>
             <p>{{'View Number: '+question.view_number|string}}</p>
@@ -16,7 +17,7 @@
             <p>{{'Posted: '+question.submission_time|string}} </p>
             <p>{{'User: '+question.user_name|string}} </p>
         </h6>
-        <p></p>
+        <br>
         <h4>
             <a href="/">                                        <img src="/static/images/back-arrow.png" class="icon">  Back</a>
             <a href="/question/{{question.id}}/new-answer">     <img src="/static/images/pencil.png" class="icon">      Answer</a>
@@ -25,24 +26,24 @@
             {% endif %}
             <a href="/question/{{ question.id|int}}/q-comment"> <img src="/static/images/eye.png" class="icon">         Comments</a>
         </h4>
-        <p></p>
-    {% endfor %}
-     <h4>Answers:</h4>
-    {% for answer in answers_list %}
+        <br>
+        {% endfor %}
+            <h4>Answers:</h4>
+        {% for answer in answers_list %}
         <p>
-        <h3>{{answer.message}}</h3>
+            <h3>{{answer.message}}</h3>
         </p>
         <p>Votes: {{answer.vote_number}} <a href="">▲</a> <a href="">▼</a>  Posted: {{answer.submission_time}} By: {{ answer.user_name|string }}
-        {% if u_name == answer.user_name %}
-            {% for question in questions %}
-                <a href="/answer/{{ question.id}}/delete-answer/{{ answer.id }}">       <img src="/static/images/trash.png" class="icon">     Delete </a>
-            {% endfor %}
-            <a href="/question/{{ num|int}}/edit-answer/{{ answer.id }}">           <img src="/static/images/pencil.png" class="icon">  Update</a>
-        {% endif %}
+            {% if u_name == answer.user_name %}
+                {% for question in questions %}
+                    <a href="/answer/{{ question.id}}/delete-answer/{{ answer.id }}">       <img src="/static/images/trash.png" class="icon">     Delete </a>
+                {% endfor %}
+                <a href="/question/{{ num|int}}/edit-answer/{{ answer.id }}">           <img src="/static/images/pencil.png" class="icon">  Update</a>
+            {% endif %}
             <a href="/question/{{ num }}/a-comment/{{ answer.id }}">                <img src="/static/images/eye.png" class="icon">     Comments</a>
         </p>
         <p></p>
         {%endfor%}
-{% endblock %}
-</body>
+    {% endblock %}
+    </body>
 </html>

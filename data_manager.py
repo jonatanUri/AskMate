@@ -1,5 +1,4 @@
 import time
-import os
 import database_common
 
 
@@ -30,6 +29,7 @@ def read_all_users(cursor):
                     """)
     user_data = cursor.fetchall()
     return user_data
+
 
 @database_common.connection_handler
 def answer_by_question_id(cursor, id_):
@@ -136,8 +136,8 @@ def delete_all_comments_from_answer(cursor, id_):
 @database_common.connection_handler
 def delete_answer(cursor, id_):
     cursor.execute("""
-                    DELETE FROM answer WHERE id= %(id_)s 
-                    """,
+                        DELETE FROM answer WHERE id= %(id_)s 
+                        """,
                    {'id_': id_})
 
 
@@ -147,7 +147,7 @@ def add_question(cursor, new_question):
                         INSERT INTO question(id, user_id, submission_time, view_number, vote_number, title, message, image) 
                         VALUES (%(id)s,%(user_id)s, %(submission_time)s, %(view_number)s, %(vote_number)s,%(title)s,%(message)s,
                         %(image)s);
-                        """, new_question)
+                    """, new_question)
 
 
 @database_common.connection_handler

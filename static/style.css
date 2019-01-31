@@ -168,7 +168,7 @@ td {
     font-size: 1.5em;
     text-align: center;
     border-top: 1px #f0f8fc solid;
-    padding: 5px 0px;
+    padding: 5px 0;
     color: white;
 }
 
@@ -186,7 +186,7 @@ tr {
     font-weight: bold;
     color: #f0f8fc;
     font-family: 'Roboto Condensed', sans-serif;
-    padding-left: 0px;
+    padding-left: 0;
 }
 
 input {

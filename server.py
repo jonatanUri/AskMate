@@ -280,6 +280,5 @@ def list_all_users():
     return render_template('all_users.html', user_data=user_data)
 
 
-
 if __name__ == "__main__":
     app.run()

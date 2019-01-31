@@ -303,7 +303,7 @@ def registration(cursor, reg_info):
 
 
 @database_common.connection_handler
-def get_registered_users(cursor, name):
+def returns_user_if_exists(cursor, name):
     cursor.execute("""
                       SELECT user_name FROM "user"
                       WHERE user_name=%(name)s;

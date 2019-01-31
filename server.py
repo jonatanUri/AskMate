@@ -1,5 +1,5 @@
 import bcrypt
-from flask import Flask, render_template, redirect, request, session, escape
+from flask import Flask, render_template, redirect, request, session, escape, url_for, flash
 import data_manager
 import login_manager
 
@@ -20,7 +20,7 @@ def home_redirect():
     else:
         name = 'You are not logged in'
 
-    questions_dict=data_manager.read_latest_five_questions()
+    questions_dict = data_manager.read_latest_five_questions()
 
     return render_template("index.html", questions_dict=questions_dict, name=name)
 
@@ -30,6 +30,10 @@ def login():
     if request.method == 'POST':
         pw = request.form['password']
         username = request.form['username']
+        user_found = data_manager.returns_user_if_exists(username)
+        if len(pw) == 0 or len(username) == 0 or user_found == [] or username == user_found[0]:
+            flash('Failed to log in')
+            return redirect(url_for('home_redirect'))
         hash_pw = login_manager.read_hash(username)['user_password']
         if login_manager.verify_password(pw, hash_pw):
             session['username'] = username
@@ -57,7 +61,7 @@ def hash_password(plain_text_password):
 
 def validate_password(user_name, password):
     if len(user_name) <= 5 or len(password) <= 5 or " " in user_name:
-        user = data_manager.get_registered_users(user_name)
+        user = data_manager.returns_user_if_exists(user_name)
         if user == user_name:
             return True
         return False

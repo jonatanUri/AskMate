@@ -24,6 +24,17 @@
         </div>
     </head>
     <body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    {% if message == "Failed to log in" %}
+                    <script>alert("Failed to log in")</script>
+                    {% endif %}
+                {% endfor %}
+             </ul>
+        {% endif %}
+    {% endwith %}
         <a href="/all_users" class="btn">list all users</a>
         <a href="/registration" class="btn">registration</a>
         <a href="/new-question" class="btn">ASK A QUESTION!</a>
@@ -35,3 +46,6 @@
         <h3><a href="{{ url_for('mainpage') }}">More</a> </h3>
     </body>
 </html>
+{% if warning is defined %}
+<script>alert('Login is failed')</script>
+{% endif %}

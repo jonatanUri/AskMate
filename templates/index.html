@@ -37,7 +37,9 @@
     {% endwith %}
         <a href="/all_users" class="btn">list all users</a>
         <a href="/registration" class="btn">registration</a>
+        {% if name != 'You are not logged in' %}
         <a href="/new-question" class="btn">ASK A QUESTION!</a>
+        {% endif %}
         {% for i in questions_dict %}
         <p><a href="question/{{ i['id'] }}" class="question-title"><h3>{{ i['title'] }}</h3></a></p>
         <h4 class="question-message">{{i['message']}}</h4>
